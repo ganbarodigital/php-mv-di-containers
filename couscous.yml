@@ -29,6 +29,9 @@ menu:
             home:
                 text: Home
                 relativeUrl: index.html
+            background:
+                text: Background
+                relativeurl: why-another-di-solution.html
             license:
                 text: License
                 relativeUrl: license.html
