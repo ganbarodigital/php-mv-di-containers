@@ -20,3 +20,7 @@ Class | Description
 [`NotAnInstanceBuilderList`](NotAnInstanceBuilderList.html) | thrown when we have been given something that we cannot use as an instance builder list
 
 Click on the name of an exception for full details.
+
+## Exceptions Container
+
+[`DIContainersExceptions`](DIContainersExceptions.html) provides a full list of exception builders as an [`InstanceBuildersList`](../Interfaces/InstanceBuildersList.html).

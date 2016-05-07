@@ -14,6 +14,8 @@ pageflow_next_text: Contributing
 
 * Added generic type for catching all exceptions that this library declares
   - added `DIContainersException`
+* Added a DI container that contains builders for every exception in this library
+  - added `DIContainersExceptions`
 * Added DI container that returns invokable factories
   - added `NoBuilderForInstanceAlias` exception
   - added `NotAnInstanceBuilder` exception
