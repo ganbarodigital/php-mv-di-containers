@@ -13,7 +13,8 @@
     ],
     "require": {
         "php": ">= 5.5",
-        "container-interop/container-interop": "^1.1"
+        "container-interop/container-interop": "^1.1",
+        "ganbarodigital/php-mv-exception-helpers": "^1.2016050201"
     },
     "require-dev": {
         "couscous/couscous": "dev-develop",
