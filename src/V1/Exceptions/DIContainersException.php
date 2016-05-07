@@ -43,6 +43,9 @@
 
 namespace GanbaroDigital\DIContainers\V1\Exceptions;
 
+/**
+ * type-hint implemented by every exception in this library
+ */
 interface DIContainersException
 {
 }
