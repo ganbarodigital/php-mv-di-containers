@@ -17,3 +17,4 @@ pageflow_next_text: Contributing
 * Added DI container that returns invokable factories
   - added `NoBuilderForInstanceAlias` exception
   - added `NotAnInstanceBuilder` exception
+  - added `NotAnInstanceBuilderList` exception
