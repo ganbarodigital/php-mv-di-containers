@@ -93,7 +93,7 @@ throw NoBuilderForInstanceAlias::newFromInstanceAlias("trout");
 
 ```php
 // example 1: we catch only NoBuilderForInstanceAlias exceptions
-use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias
+use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias;
 
 try {
     throw NoBuilderForInstanceAlias::newFromInstanceAlias("trout");
@@ -105,7 +105,7 @@ catch(NoBuilderForInstanceAlias $e) {
 
 ```php
 // example 2: catch all exceptions thrown by the DIContainers Library
-use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias
+use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersException;
 
 try {
@@ -119,7 +119,7 @@ catch(DIContainersException $e) {
 ```php
 // example 3: catch all exceptions where something went wrong that
 // should never happen
-use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias
+use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias;
 use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
 
 try {
@@ -133,7 +133,7 @@ catch(HttpRuntimeErrorException $e) {
 
 ```php
 // example 4: catch all exceptions that map onto a HTTP status
-use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias
+use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias;
 use GanbaroDigital\HttpStatus\Interfaces\HttpException;
 
 try {
@@ -147,7 +147,7 @@ catch(HttpException $e) {
 
 ```php
 // example 5: catch all runtime exceptions
-use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias
+use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias;
 use RuntimeException;
 
 try {
