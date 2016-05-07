@@ -173,30 +173,30 @@ Here is the contract for this class:
      [x] Can pass caller filter into build from instance alias
      [x] Build from instance alias will use default caller filter if no filter provided
 
- Class contracts are built from this class's unit tests.
+Class contracts are built from this class's unit tests.
 
- <div class="callout success">
- Future releases of this class will not break this contract.
- </div>
+<div class="callout success">
+Future releases of this class will not break this contract.
+</div>
 
- <div class="callout info" markdown="1">
- Future releases of this class may add to this contract. New additions may include:
+<div class="callout info" markdown="1">
+Future releases of this class may add to this contract. New additions may include:
 
- * clarifying existing behaviour (e.g. stricter contract around input or return types)
- * add new behaviours (e.g. extra class methods)
- </div>
+* clarifying existing behaviour (e.g. stricter contract around input or return types)
+* add new behaviours (e.g. extra class methods)
+</div>
 
- <div class="callout warning" markdown="1">
- When you use this class, you can only rely on the behaviours documented by this contract.
+<div class="callout warning" markdown="1">
+When you use this class, you can only rely on the behaviours documented by this contract.
 
- If you:
+If you:
 
- * find other ways to use this class,
- * or depend on behaviours that are not covered by a unit test,
- * or depend on undocumented internal states of this class,
+* find other ways to use this class,
+* or depend on behaviours that are not covered by a unit test,
+* or depend on undocumented internal states of this class,
 
- ... your code may not work in the future.
- </div>
+... your code may not work in the future.
+</div>
 
 ## Notes
 

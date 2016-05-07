@@ -3,6 +3,8 @@ currentSection: v1
 currentItem: exceptions
 pageflow_prev_url: NotAnInstanceBuilder.html
 pageflow_prev_text: NotAnInstanceBuilder class
+pageflow_next_url: DIContainersExceptions.html
+pageflow_next_text: DIContainersExceptions class
 ---
 
 # NotAnInstanceBuilderList
