@@ -1,8 +1,8 @@
 ---
 currentSection: v1
 currentItem: exceptions
-pageflow_next_url: NoBuilderForInstanceAlias.html
-pageflow_next_text: NoBuilderForInstanceAlias class
+pageflow_next_url: NoSuchFactory.html
+pageflow_next_text: NoSuchFactory class
 ---
 
 # Exceptions
@@ -15,12 +15,12 @@ This is a list of all of the exceptions that this library can throw.
 
 Class | Description
 ------|------------
-[`NoBuilderForInstanceAlias`](NoBuilderForInstanceAlias.html) | thrown when there is no known builder for a given instance alias
-[`NotAnInstanceBuilder`](NotAnInstanceBuilder.html) | thrown when we have been given something that we cannot use as an instance builder
-[`NotAnInstanceBuilderList`](NotAnInstanceBuilderList.html) | thrown when we have been given something that we cannot use as an instance builder list
+[`NoSuchFactory`](NoSuchFactory.html) | thrown when there is no known factory for a given name
+[`NotAFactory`](NotAFactory.html) | thrown when we have been given something that we cannot use as a factory
+[`NotAListOfFactories`](NotAListOfFactories.html) | thrown when we have been given something that we cannot use as a list of factories
 
 Click on the name of an exception for full details.
 
 ## Exceptions Container
 
-[`DIContainersExceptions`](DIContainersExceptions.html) provides a full list of exception builders as an [`InstanceBuildersList`](../Interfaces/InstanceBuildersList.html).
+[`DIContainersExceptions`](DIContainersExceptions.html) provides a full list of exception factories as an [`FactoryList`](../Interfaces/FactoryList.html).

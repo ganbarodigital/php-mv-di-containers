@@ -1,8 +1,8 @@
 ---
 currentSection: v1
 currentItem: exceptions
-pageflow_prev_url: NotAnInstanceBuilderList.html
-pageflow_prev_text: NotAnInstanceBuilderList class
+pageflow_prev_url: NotAListOfFactories.html
+pageflow_prev_text: NotAListOfFactories class
 ---
 
 # DIContainersExceptions
@@ -13,7 +13,7 @@ Not yet in a tagged release
 
 ## Description
 
-`DIContainersExceptions` is an [`InstanceBuildersList`](../Interfaces/InstanceBuildersList.html). It provides a list of all exceptions that the _Dependency-Injection Containers Library_ can build, along with a factory method for each exception.
+`DIContainersExceptions` is an [`FactoryList`](../Interfaces/FactoryList.html). It provides a list of all exceptions that the _Dependency-Injection Containers Library_ can build, along with a factory method for each exception.
 
 ## Public Interface
 
@@ -24,18 +24,18 @@ Not yet in a tagged release
 namespace GanbaroDigital\DIContainers\V1\Exceptions;
 
 // our base classes and interfaces
-use GanbaroDigital\DIContainers\V1\InstanceBuilders\Entities\InstanceBuilders;
-use GanbaroDigital\DIContainers\V1\Interfaces\InstanceBuildersList;
+use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
 
-class DIContainersExceptions extends InstanceBuilders
+class DIContainersExceptions extends FactoryListContainer
 {
     public function __construct();
 
     /**
-     * return the full list of aliases and builders as a real PHP array
+     * return the full list of factories as a real PHP array
      *
      * @return array
-     * @inheritedFrom InstanceBuildersList
+     * @inheritedFrom FactoryList
      */
     public function getList();
 }
@@ -58,9 +58,9 @@ $exceptions = new DIContainersExceptions;
 The whole point of this class is that your library can override the exceptions thrown by this library.
 
 ```php
-use GanbaroDigital\DIContainers\V1\InstanceBuilders\Entities\InstanceBuilders;
+use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
 
-class MyLibraryExceptions extends InstanceBuilders
+class MyLibraryExceptions extends FactoryListContainer
 {
     public function __construct()
     {
@@ -85,8 +85,8 @@ Here is the contract for this class:
 
     GanbaroDigital\DIContainers\V1\Exceptions\DIContainersExceptions
      [x] Can instantiate
-     [x] Can get instance builder for no builder for instance alias
-     [x] Can get instance builder for not an instance builder
+     [x] Can get factory for no such factory
+     [x] Can get factory for not a factory
      [x] Can get instance builder for not an instance builder list
 
 Class contracts are built from this class's unit tests.
@@ -120,4 +120,5 @@ None at this time.
 
 ## See Also
 
-* [`InstanceBuilders`](../InstanceBuilders/InstanceBuilders.html) - factory-driven dependency injection container
+* [`FactoryList`](../Interfaces/FactoryList.html) - interface for a factory-driven dependency-injection container
+* [`FactoryListContainer`](../InstanceBuilders/FactoryListContainer.html) - factory-driven dependency-injection container

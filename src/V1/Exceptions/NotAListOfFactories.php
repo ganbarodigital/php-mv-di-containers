@@ -43,52 +43,15 @@
 
 namespace GanbaroDigital\DIContainers\V1\Exceptions;
 
-use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
-use GanbaroDigital\ExceptionHelpers\V1\Callers\Filters\FilterCodeCaller;
-use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
-use GanbaroDigital\HttpStatus\StatusProviders\RuntimeError\UnexpectedErrorStatusProvider;
-use GanbaroDigital\MissingBits\TypeInspectors\GetPrintableType;
+use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\UnsupportedType;
 
 /**
- * exception thrown when we're asked to build an instance, but there's no
- * builder registered for the given alias
+ * exception thrown when you attempt to create an instance of an
+ * FactoryList, but you provide something that isn't an acceptable
+ * list of factories
  */
-class NoBuilderForInstanceAlias
-  extends ParameterisedException
-  implements DIContainersException, HttpRuntimeErrorException
+class NotAListOfFactories
+  extends UnsupportedType
+  implements DIContainersException
 {
-    // adds 'getHttpStatus()' that returns a HTTP 500 status value object
-    use UnexpectedErrorStatusProvider;
-
-    /**
-     * create a new exception
-     *
-     * @param  mixed $instanceAlias
-     *         the name of the instance that we could not find a builder for
-     * @param  array|null $callerFilter
-     *         are there any namespaces we want to filter out of the call stack?
-     * @return NoBuilderForInstanceAlias
-     *         an fully-built exception for you to throw
-     */
-    public static function newFromInstanceAlias($instanceAlias, $callerFilter = null)
-    {
-        // what filter are we applying?
-        if (!is_array($callerFilter)) {
-            $callerFilter = FilterCodeCaller::$DEFAULT_PARTIALS;
-        }
-
-        // who called us?
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $caller = FilterCodeCaller::from($backtrace, $callerFilter);
-
-        // all done
-        return new static(
-            "%callerName\$s: no builder for instance alias '%instanceAlias\$s'",
-            [
-                'instanceAlias' => $instanceAlias,
-                'callerName' => $caller->getCaller(),
-                'caller' => $caller,
-            ]
-        );
-    }
 }

@@ -17,6 +17,7 @@ pageflow_next_text: Contributing
 * Added a DI container that contains builders for every exception in this library
   - added `DIContainersExceptions`
 * Added DI container that returns invokable factories
-  - added `NoBuilderForInstanceAlias` exception
-  - added `NotAnInstanceBuilder` exception
-  - added `NotAnInstanceBuilderList` exception
+  - added `FactoryListContainer` DI container
+  - added `NoSuchFactory` exception
+  - added `NotAFactory` exception
+  - added `NotAListOfFactories` exception

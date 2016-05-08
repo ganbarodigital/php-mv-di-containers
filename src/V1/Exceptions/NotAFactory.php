@@ -51,9 +51,9 @@ use GanbaroDigital\MissingBits\TypeInspectors\GetPrintableType;
 
 /**
  * exception thrown when you attempt to register something that isn't an
- * acceptable instance builder
+ * acceptable factory
  */
-class NotAnInstanceBuilder
+class NotAFactory
   extends ParameterisedException
   implements DIContainersException, HttpRuntimeErrorException
 {
@@ -63,18 +63,18 @@ class NotAnInstanceBuilder
     /**
      * create a new exception
      *
-     * @param  string $alias
-     *         the alias that the bad builder is for
-     * @param  mixed $badBuilder
+     * @param  string $factoryName
+     *         the name that the bad factory was given
+     * @param  mixed $badFactory
      *         the non-callable that we were given
      * @param  int|null $typeFlags
      *         do we want any extra type information in the final exception message?
      * @param  array|null $callerFilter
      *         are there any namespaces we want to filter out of the call stack?
-     * @return NotAnInstanceBuilder
+     * @return NotAFactory
      *         an fully-built exception for you to throw
      */
-    public static function newFromNonCallable($alias, $badBuilder, $typeFlags = null, $callerFilter = null)
+    public static function newFromNonCallable($factoryName, $badFactory, $typeFlags = null, $callerFilter = null)
     {
         // what flags are we applying?
         if (!is_int($typeFlags)) {
@@ -91,15 +91,15 @@ class NotAnInstanceBuilder
         $caller = FilterCodeCaller::from($backtrace, $callerFilter);
 
         // what type was rejected?
-        $type = GetPrintableType::of($badBuilder, $typeFlags);
+        $type = GetPrintableType::of($badFactory, $typeFlags);
 
         // all done
         return new static(
-            "%callerName\$s: '\$instanceBuilder' for '%instanceAlias\$s' must be callable; %badBuilderType\$s given",
+            "%callerName\$s: '\$factory' for '%factoryName\$s' must be callable; %badFactoryType\$s given",
             [
-                'instanceAlias' => $alias,
-                'badBuilder' => $badBuilder,
-                'badBuilderType' => $type,
+                'factoryName' => $factoryName,
+                'badFactory' => $badFactory,
+                'badFactoryType' => $type,
                 'callerName' => $caller->getCaller(),
                 'caller' => $caller,
             ]

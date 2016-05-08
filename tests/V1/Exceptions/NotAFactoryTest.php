@@ -46,7 +46,7 @@ namespace GanbaroDigitalTest\DIContainers\V1\Exceptions;
 use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
 use GanbaroDigital\ExceptionHelpers\V1\Callers\Values\CodeCaller;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersException;
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder;
+use GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory;
 use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
 use GanbaroDigital\HttpStatus\StatusProviders\RuntimeError\UnexpectedErrorStatusProvider;
 use GanbaroDigital\HttpStatus\StatusValues\RuntimeError\UnexpectedErrorStatus;
@@ -54,9 +54,9 @@ use PHPUnit_Framework_TestCase;
 use RuntimeException;
 
 /**
- * @coversDefaultClass GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder
+ * @coversDefaultClass GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory
  */
-class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
+class NotAFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::__construct
@@ -69,12 +69,12 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilder(__CLASS__);
+        $unit = new NotAFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertInstanceOf(NotAnInstanceBuilder::class, $unit);
+        $this->assertInstanceOf(NotAFactory::class, $unit);
     }
 
     /**
@@ -88,7 +88,7 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilder(__CLASS__);
+        $unit = new NotAFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -107,7 +107,7 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilder(__CLASS__);
+        $unit = new NotAFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -126,7 +126,7 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilder(__CLASS__);
+        $unit = new NotAFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -145,7 +145,7 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilder(__CLASS__);
+        $unit = new NotAFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -161,7 +161,7 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $unit = new NotAnInstanceBuilder(__CLASS__);
+        $unit = new NotAFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // perform the change
@@ -178,20 +178,20 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
      * @covers ::newFromNonCallable
      * @dataProvider provideNonCallableToTest
      */
-    public function testCanBuildFromBadInstanceBuilders($nonCallable, $expectedType)
+    public function testCanBuildFromNonCallables($nonCallable, $expectedType)
     {
         // ----------------------------------------------------------------
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$instanceBuilder' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
 
         // we have to pass in an empty filter to make sure that we're picked
         // up as the caller
-        $unit = NotAnInstanceBuilder::newFromNonCallable($expectedAlias, $nonCallable);
+        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
 
         // ----------------------------------------------------------------
         // test the results
@@ -212,14 +212,14 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$instanceBuilder' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
 
         // we have to pass in an empty filter to make sure that we're picked
         // up as the caller
-        $unit = NotAnInstanceBuilder::newFromNonCallable($expectedAlias, $nonCallable);
+        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
 
         // ----------------------------------------------------------------
         // test the results
@@ -240,14 +240,14 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$instanceBuilder' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
 
         // we have to pass in an empty filter to make sure that we're picked
         // up as the caller
-        $unit = NotAnInstanceBuilder::newFromNonCallable($expectedAlias, $nonCallable);
+        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
 
         // ----------------------------------------------------------------
         // test the results
@@ -262,20 +262,20 @@ class NotAnInstanceBuilderTest extends PHPUnit_Framework_TestCase
      * @covers ::newFromNonCallable
      * @dataProvider provideNonCallableToTest
      */
-    public function testExceptionMessageContainsTypeOfBadBuilder($nonCallable, $expectedType)
+    public function testExceptionMessageContainsTypeOfBadFactory($nonCallable, $expectedType)
     {
         // ----------------------------------------------------------------
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$instanceBuilder' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
 
         // we have to pass in an empty filter to make sure that we're picked
         // up as the caller
-        $unit = NotAnInstanceBuilder::newFromNonCallable($expectedAlias, $nonCallable);
+        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
 
         // ----------------------------------------------------------------
         // test the results

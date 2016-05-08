@@ -42,22 +42,23 @@
  */
 
 namespace GanbaroDigital\DIContainers\V1\Exceptions;
-use GanbaroDigital\DIContainers\V1\InstanceBuilders\Entities\InstanceBuilders;
+use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
 
 /**
  * a list of the exceptions thrown by this library, or by any libraries that
  * we rely on
  */
-class DIContainersExceptions extends InstanceBuilders
+class DIContainersExceptions extends FactoryListContainer
 {
     public function __construct()
     {
         // all of the exceptions that our library can create, and the means
         // to create them
         $ourExceptions = [
-            'NoBuilderForInstanceAlias::newFromInstanceAlias' => [ NoBuilderForInstanceAlias::class, 'newFromInstanceAlias' ],
-            'NotAnInstanceBuilder::newFromNonCallable' => [ NotAnInstanceBuilder::class, 'newFromNonCallable' ],
-            'NotAnInstanceBuilderList::newFromVar' => [ NotAnInstanceBuilderList:: class, 'newFromVar' ],
+            'ContainerIsReadOnly::newFromContainer' => [ ContainerIsReadOnly::class, 'newFromContainer' ],
+            'NoSuchFactory::newFromFactoryName' => [ NoSuchFactory::class, 'newFromFactoryName' ],
+            'NotAFactory::newFromNonCallable' => [ NotAFactory::class, 'newFromNonCallable' ],
+            'NotAListOfFactories::newFromVar' => [ NotAListOfFactories:: class, 'newFromVar' ],
         ];
 
         // special case - we have to pass $this into our parent constructor

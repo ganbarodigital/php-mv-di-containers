@@ -62,9 +62,9 @@ menu:
             home:
                 text: Introduction
                 relativeUrl: V1/index.html
-            InstanceBuilders:
-                text: Instance Builders
-                relativeUrl: V1/InstanceBuilders/index.html
+            FactoryList:
+                text: FactoryList
+                relativeUrl: V1/FactoryList/index.html
             exceptions:
                 text: Exceptions
                 relativeUrl: V1/Exceptions/index.html

@@ -43,15 +43,51 @@
 
 namespace GanbaroDigital\DIContainers\V1\Exceptions;
 
-use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\UnsupportedType;
+use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
+use GanbaroDigital\ExceptionHelpers\V1\Callers\Filters\FilterCodeCaller;
+use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
+use GanbaroDigital\HttpStatus\StatusProviders\RuntimeError\UnexpectedErrorStatusProvider;
+use GanbaroDigital\MissingBits\TypeInspectors\GetPrintableType;
 
 /**
- * exception thrown when you attempt to create an instance of an
- * InstanceBuildersList, but you provide something that isn't an acceptable
- * list of instance builders
+ * exception thrown when we're asked for a factory we do not know about
  */
-class NotAnInstanceBuilderList
-  extends UnsupportedType
-  implements DIContainersException
+class NoSuchFactory
+  extends ParameterisedException
+  implements DIContainersException, HttpRuntimeErrorException
 {
+    // adds 'getHttpStatus()' that returns a HTTP 500 status value object
+    use UnexpectedErrorStatusProvider;
+
+    /**
+     * create a new exception
+     *
+     * @param  mixed $factoryName
+     *         the name of the factory that we do not know about
+     * @param  array|null $callerFilter
+     *         are there any namespaces we want to filter out of the call stack?
+     * @return NoSuchFactory
+     *         an fully-built exception for you to throw
+     */
+    public static function newFromFactoryName($factoryName, $callerFilter = null)
+    {
+        // what filter are we applying?
+        if (!is_array($callerFilter)) {
+            $callerFilter = FilterCodeCaller::$DEFAULT_PARTIALS;
+        }
+
+        // who called us?
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $caller = FilterCodeCaller::from($backtrace, $callerFilter);
+
+        // all done
+        return new static(
+            "%callerName\$s: no factory called '%factoryName\$s'",
+            [
+                'factoryName' => $factoryName,
+                'callerName' => $caller->getCaller(),
+                'caller' => $caller,
+            ]
+        );
+    }
 }

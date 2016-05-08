@@ -45,11 +45,11 @@ namespace GanbaroDigitalTest\DIContainers\V1\Exceptions;
 
 use RuntimeException;
 use PHPUnit_Framework_TestCase;
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersExceptions;
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilderList;
-use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias;
-use GanbaroDigital\DIContainers\V1\Interfaces\InstanceBuildersList;
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
+use GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory;
+use GanbaroDigital\DIContainers\V1\Exceptions\NotAListOfFactories;
+use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
 
 /**
  * @coversDefaultClass GanbaroDigital\DIContainers\V1\Exceptions\DIContainersExceptions
@@ -78,7 +78,7 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
     /**
      * @coversNothing
      */
-    public function testCanGetInstanceBuilderForNoBuilderForInstanceAlias()
+    public function testCanGetFactoryForNoSuchFactory()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -88,7 +88,7 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $builder = $unit['NoBuilderForInstanceAlias::newFromInstanceAlias'];
+        $builder = $unit['NoSuchFactory::newFromFactoryName'];
         $exception = $builder('trout');
 
         // ----------------------------------------------------------------
@@ -97,13 +97,13 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // we prove that we got the correct builder by checking the type
         // of the exception that it built
 
-        $this->assertInstanceOf(NoBuilderForInstanceAlias::class, $exception);
+        $this->assertInstanceOf(NoSuchFactory::class, $exception);
     }
 
     /**
      * @coversNothing
      */
-    public function testCanGetInstanceBuilderForNotAnInstanceBuilder()
+    public function testCanGetFactoryForNotAFactory()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -113,7 +113,7 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $builder = $unit['NotAnInstanceBuilder::newFromNonCallable'];
+        $builder = $unit['NotAFactory::newFromNonCallable'];
         $exception = $builder('trout', false);
 
         // ----------------------------------------------------------------
@@ -122,7 +122,7 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // we prove that we got the correct builder by checking the type
         // of the exception that it built
 
-        $this->assertInstanceOf(NotAnInstanceBuilder::class, $exception);
+        $this->assertInstanceOf(NotAFactory::class, $exception);
     }
 
     /**
@@ -138,7 +138,7 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $builder = $unit['NotAnInstanceBuilderList::newFromVar'];
+        $builder = $unit['NotAListOfFactories::newFromVar'];
         $exception = $builder('trout', '$list');
 
         // ----------------------------------------------------------------
@@ -147,6 +147,6 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // we prove that we got the correct builder by checking the type
         // of the exception that it built
 
-        $this->assertInstanceOf(NotAnInstanceBuilderList::class, $exception);
+        $this->assertInstanceOf(NotAListOfFactories::class, $exception);
     }
 }

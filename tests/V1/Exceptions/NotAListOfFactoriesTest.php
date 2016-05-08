@@ -43,20 +43,20 @@
 
 namespace GanbaroDigitalTest\DIContainers\V1\Exceptions;
 
-use RuntimeException;
-use PHPUnit_Framework_TestCase;
-use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersException;
-use GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias;
 use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
-use GanbaroDigital\ExceptionHelpers\V1\Callers\Values\CodeCaller;
+use GanbaroDigital\ExceptionHlpers\V1\Callers\Values\CodeCaller;
+use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersException;
+use GanbaroDigital\DIContainers\V1\Exceptions\NotAListOfFactories;
 use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
 use GanbaroDigital\HttpStatus\StatusProviders\RuntimeError\UnexpectedErrorStatusProvider;
 use GanbaroDigital\HttpStatus\StatusValues\RuntimeError\UnexpectedErrorStatus;
+use PHPUnit_Framework_TestCase;
+use RuntimeException;
 
 /**
- * @coversDefaultClass GanbaroDigital\DIContainers\V1\Exceptions\NoBuilderForInstanceAlias
+ * @coversDefaultClass GanbaroDigital\DIContainers\V1\Exceptions\NotAListOfFactories
  */
-class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
+class NotAListOfFactoriesTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::__construct
@@ -69,12 +69,12 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NoBuilderForInstanceAlias(__CLASS__);
+        $unit = new NotAListOfFactories(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertInstanceOf(NoBuilderForInstanceAlias::class, $unit);
+        $this->assertInstanceOf(NotAListOfFactories::class, $unit);
     }
 
     /**
@@ -88,7 +88,7 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NoBuilderForInstanceAlias(__CLASS__);
+        $unit = new NotAListOfFactories(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -107,7 +107,7 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NoBuilderForInstanceAlias(__CLASS__);
+        $unit = new NotAListOfFactories(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -126,7 +126,7 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NoBuilderForInstanceAlias(__CLASS__);
+        $unit = new NotAListOfFactories(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -145,7 +145,7 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NoBuilderForInstanceAlias(__CLASS__);
+        $unit = new NotAListOfFactories(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -161,7 +161,7 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $unit = new NoBuilderForInstanceAlias(__CLASS__);
+        $unit = new NotAListOfFactories(__CLASS__);
 
         // ----------------------------------------------------------------
         // perform the change
@@ -175,27 +175,21 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::newFromInstanceAlias
+     * @covers ::newFromVar
+     * @dataProvider provideNonArrayToTest
      */
-    public function testCanBuildFromInstanceAlias()
+    public function testCanBuildFromBadList($nonArray, $expectedType)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $instanceAlias = "TheTroutIsRevolting!";
-        $expectedMessage = "GanbaroDigitalTest\DIContainers\V1\Exceptions\NoBuilderForInstanceAliasTest->testCanBuildFromInstanceAlias()@198: no builder for instance alias 'TheTroutIsRevolting!'";
-        $expectedData = [
-            'instanceAlias' => $instanceAlias,
-            'callerName' => 'GanbaroDigitalTest\DIContainers\V1\Exceptions\NoBuilderForInstanceAliasTest->testCanBuildFromInstanceAlias()@198',
-            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, 198),
-        ];
+        $expectedAlias = "FakeException";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
 
         // ----------------------------------------------------------------
         // perform the change
 
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NoBuilderForInstanceAlias::newFromInstanceAlias($instanceAlias, []);
+        $unit = NotAListOfFactories::newFromVar($nonArray, '$nonArray');
 
         // ----------------------------------------------------------------
         // test the results
@@ -204,31 +198,24 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         $actualData = $unit->getMessageData();
 
         $this->assertEquals($expectedMessage, $actualMessage);
-        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
-     * @covers ::newFromInstanceAlias
+     * @covers ::newFromVar
+     * @dataProvider provideNonArrayToTest
      */
-    public function testCanPassCallerFilterIntoBuildFromInstanceAlias()
+    public function testExceptionMessageContainsCaller($nonArray, $expectedType)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $instanceAlias = "TheTroutIsRevolting!";
-        $expectedMessage = "GanbaroDigitalTest\DIContainers\V1\Exceptions\NoBuilderForInstanceAliasTest->testCanPassCallerFilterIntoBuildFromInstanceAlias()@231: no builder for instance alias 'TheTroutIsRevolting!'";
-        $expectedData = [
-            'instanceAlias' => $instanceAlias,
-            'callerName' => 'GanbaroDigitalTest\DIContainers\V1\Exceptions\NoBuilderForInstanceAliasTest->testCanPassCallerFilterIntoBuildFromInstanceAlias()@231',
-            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, 231),
-        ];
+        $expectedAlias = "FakeException";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
 
         // ----------------------------------------------------------------
         // perform the change
 
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NoBuilderForInstanceAlias::newFromInstanceAlias($instanceAlias, []);
+        $unit = NotAListOfFactories::newFromVar($nonArray, '$nonArray');
 
         // ----------------------------------------------------------------
         // test the results
@@ -237,31 +224,24 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         $actualData = $unit->getMessageData();
 
         $this->assertEquals($expectedMessage, $actualMessage);
-        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
-     * @covers ::newFromInstanceAlias
+     * @covers ::newFromVar
+     * @dataProvider provideNonArrayToTest
      */
-    public function testBuildFromInstanceAliasWillUseDefaultCallerFilterIfNoFilterProvided()
+    public function testExceptionMessageContainsTypeOfNonList($nonArray, $expectedType)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $instanceAlias = "TheTroutIsRevolting!";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): no builder for instance alias 'TheTroutIsRevolting!'";
-        $expectedData = [
-            'instanceAlias' => $instanceAlias,
-            'callerName' => 'ReflectionMethod->invokeArgs()',
-            'caller' => new CodeCaller('ReflectionMethod', 'invokeArgs', '->', null, null),
-        ];
+        $expectedAlias = "FakeException";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
 
         // ----------------------------------------------------------------
         // perform the change
 
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NoBuilderForInstanceAlias::newFromInstanceAlias($instanceAlias);
+        $unit = NotAListOfFactories::newFromVar($nonArray, '$nonArray');
 
         // ----------------------------------------------------------------
         // test the results
@@ -270,6 +250,22 @@ class NoBuilderForInstanceAliasTest extends PHPUnit_Framework_TestCase
         $actualData = $unit->getMessageData();
 
         $this->assertEquals($expectedMessage, $actualMessage);
-        $this->assertEquals($expectedData, $actualData);
+    }
+
+    public function provideNonArrayToTest()
+    {
+        return [
+            [ null, 'NULL' ],
+            [ true, 'boolean<true>' ],
+            [ false, 'boolean<false>' ],
+            [ function(){}, 'callable' ],
+            [ 0.0, 'double<0>' ],
+            [ 3.1415927, 'double<3.1415927>' ],
+            [ 0, 'integer<0>' ],
+            [ 100, 'integer<100>' ],
+            [ new \stdClass, 'object<stdClass>' ],
+            [ STDIN, 'resource' ],
+            [ "hello, world!", 'string<hello, world!>' ],
+        ];
     }
 }

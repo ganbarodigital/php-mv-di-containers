@@ -43,20 +43,20 @@
 
 namespace GanbaroDigitalTest\DIContainers\V1\Exceptions;
 
-use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
-use GanbaroDigital\ExceptionHlpers\V1\Callers\Values\CodeCaller;
+use RuntimeException;
+use PHPUnit_Framework_TestCase;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersException;
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilderList;
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
+use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
+use GanbaroDigital\ExceptionHelpers\V1\Callers\Values\CodeCaller;
 use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
 use GanbaroDigital\HttpStatus\StatusProviders\RuntimeError\UnexpectedErrorStatusProvider;
 use GanbaroDigital\HttpStatus\StatusValues\RuntimeError\UnexpectedErrorStatus;
-use PHPUnit_Framework_TestCase;
-use RuntimeException;
 
 /**
- * @coversDefaultClass GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilderList
+ * @coversDefaultClass GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory
  */
-class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
+class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::__construct
@@ -69,12 +69,12 @@ class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilderList(__CLASS__);
+        $unit = new NoSuchFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertInstanceOf(NotAnInstanceBuilderList::class, $unit);
+        $this->assertInstanceOf(NoSuchFactory::class, $unit);
     }
 
     /**
@@ -88,7 +88,7 @@ class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilderList(__CLASS__);
+        $unit = new NoSuchFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -107,7 +107,7 @@ class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilderList(__CLASS__);
+        $unit = new NoSuchFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -126,7 +126,7 @@ class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilderList(__CLASS__);
+        $unit = new NoSuchFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -145,7 +145,7 @@ class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new NotAnInstanceBuilderList(__CLASS__);
+        $unit = new NoSuchFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // test the results
@@ -161,7 +161,7 @@ class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $unit = new NotAnInstanceBuilderList(__CLASS__);
+        $unit = new NoSuchFactory(__CLASS__);
 
         // ----------------------------------------------------------------
         // perform the change
@@ -175,97 +175,101 @@ class NotAnInstanceBuilderListTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::newFromVar
-     * @dataProvider provideNonArrayToTest
+     * @covers ::newFromFactoryName
      */
-    public function testCanBuildFromBadInstanceList($nonArray, $expectedType)
+    public function testCanBuildFromFactoryName()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $unit = NotAnInstanceBuilderList::newFromVar($nonArray, '$nonArray');
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    /**
-     * @covers ::newFromVar
-     * @dataProvider provideNonArrayToTest
-     */
-    public function testExceptionMessageContainsCaller($nonArray, $expectedType)
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $unit = NotAnInstanceBuilderList::newFromVar($nonArray, '$nonArray');
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    /**
-     * @covers ::newFromVar
-     * @dataProvider provideNonArrayToTest
-     */
-    public function testExceptionMessageContainsTypeOfNonList($nonArray, $expectedType)
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $unit = NotAnInstanceBuilderList::newFromVar($nonArray, '$nonArray');
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    public function provideNonArrayToTest()
-    {
-        return [
-            [ null, 'NULL' ],
-            [ true, 'boolean<true>' ],
-            [ false, 'boolean<false>' ],
-            [ function(){}, 'callable' ],
-            [ 0.0, 'double<0>' ],
-            [ 3.1415927, 'double<3.1415927>' ],
-            [ 0, 'integer<0>' ],
-            [ 100, 'integer<100>' ],
-            [ new \stdClass, 'object<stdClass>' ],
-            [ STDIN, 'resource' ],
-            [ "hello, world!", 'string<hello, world!>' ],
+        $factoryName = "TheTroutIsRevolting!";
+        $expectedMessage = "GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanBuildFromFactoryName()@198: no factory called 'TheTroutIsRevolting!'";
+        $expectedData = [
+            'factoryName' => $factoryName,
+            'callerName' => 'GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanBuildFromFactoryName()@198',
+            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, 198),
         ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        // we have to pass in an empty filter to make sure that we're picked
+        // up as the caller
+        $unit = NoSuchFactory::newFromFactoryName($factoryName, []);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $actualMessage = $unit->getMessage();
+        $actualData = $unit->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
+    }
+
+    /**
+     * @covers ::newFromFactoryName
+     */
+    public function testCanPassCallerFilterIntoNewFromFactoryName()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $factoryName = "TheTroutIsRevolting!";
+        $expectedMessage = "GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanPassCallerFilterIntoNewFromFactoryName()@231: no factory called 'TheTroutIsRevolting!'";
+        $expectedData = [
+            'factoryName' => $factoryName,
+            'callerName' => 'GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanPassCallerFilterIntoNewFromFactoryName()@231',
+            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, 231),
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        // we have to pass in an empty filter to make sure that we're picked
+        // up as the caller
+        $unit = NoSuchFactory::newFromFactoryName($factoryName, []);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $actualMessage = $unit->getMessage();
+        $actualData = $unit->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
+    }
+
+    /**
+     * @covers ::newFromFactoryName
+     */
+    public function testNewFromFactoryNameWillUseDefaultCallerFilterIfNoFilterProvided()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $factoryName = "TheTroutIsRevolting!";
+        $expectedMessage = "ReflectionMethod->invokeArgs(): no factory called 'TheTroutIsRevolting!'";
+        $expectedData = [
+            'factoryName' => $factoryName,
+            'callerName' => 'ReflectionMethod->invokeArgs()',
+            'caller' => new CodeCaller('ReflectionMethod', 'invokeArgs', '->', null, null),
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        // we have to pass in an empty filter to make sure that we're picked
+        // up as the caller
+        $unit = NoSuchFactory::newFromFactoryName($factoryName);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $actualMessage = $unit->getMessage();
+        $actualData = $unit->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 }

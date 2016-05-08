@@ -1,13 +1,13 @@
 ---
 currentSection: v1
 currentItem: exceptions
-pageflow_prev_url: NoBuilderForInstanceAlias.html
-pageflow_prev_text: NoBuilderForInstanceAlias class
-pageflow_next_url: NotAnInstanceBuilderList.html
-pageflow_next_text: NotAnInstanceBuilderList class
+pageflow_prev_url: index.html
+pageflow_prev_text: Exceptions List
+pageflow_next_url: NotAFactory.html
+pageflow_next_text: NotAFactory class
 ---
 
-# NotAnInstanceBuilder
+# NoSuchFactory
 
 <div class="callout warning" markdown="1">
 Not yet in a tagged release
@@ -15,25 +15,25 @@ Not yet in a tagged release
 
 ## Description
 
-`NotAnInstanceBuilder` is an exception. It is thrown when we have been given an instance builder that we cannot accept.
+`NoSuchFactory` is an exception. It is thrown when a container has no factory for a given name.
 
 ## Public Interface
 
-`NotAnInstanceBuilder` has the following public interface:
+`NoSuchFactory` has the following public interface:
 
 ```php
-// NotAnInstanceBuilder lives in this namespace
+// NoSuchFactory lives in this namespace
 namespace GanbaroDigital\DIContainers\V1\Exceptions;
 
 // our base classes and interfaces
-use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersException;
+use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
 use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
 
 // return type(s) for our methods
 use GanbaroDigital\HttpStatus\StatusValues\RuntimeError\UnexpectedErrorStatus;
 
-class NotAnInstanceBuilder
+class NoSuchFactory
   extends ParameterisedException
   implements DIContainersException, HttpRuntimeErrorException
 {
@@ -43,18 +43,14 @@ class NotAnInstanceBuilder
     /**
      * create a new exception
      *
-     * @param  string $alias
-     *         the alias that the bad builder is for
-     * @param  mixed $badBuilder
-     *         the non-callable that we were given
-     * @param  int|null $typeFlags
-     *         do we want any extra type information in the final exception message?
+     * @param  mixed $factoryName
+     *         the name of the factory that we do not know about
      * @param  array|null $callerFilter
      *         are there any namespaces we want to filter out of the call stack?
-     * @return NotAnInstanceBuilder
+     * @return NoSuchFactory
      *         an fully-built exception for you to throw
      */
-    public static function newFromNonCallable($alias, $badBuilder, $typeFlags = null, $callerFilter = null);
+    public static function newFromFactoryName($factoryName, $callerFilter = null);
 
     /**
      * what was the data that we used to create the printable message?
@@ -83,37 +79,37 @@ class NotAnInstanceBuilder
 
 ### Creating Exceptions To Throw
 
-Call `NotAnInstanceBuilder::newFromNonCallable()` to create a new exception that you can throw:
+Call `NoSuchFactory::newFromFactoryName()` to create a new exception that you can throw:
 
 ```php
-use GanbaroDigital\ExceptionHelpers\V1\Exceptions\NotAnInstanceBuilder;
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 
-throw NotAnInstanceBuilder::newFromNonCallable("trout");
+throw NoSuchFactory::newFromFactoryName("trout");
 ```
 
 ### Catching The Exception
 
-`NotAnInstanceBuilder` implements a rich set of classes and interfaces. You can use any of these to catch this exception.
+`NoSuchFactory` implements a rich set of classes and interfaces. You can use any of these to catch this exception.
 
 ```php
-// example 1: we catch only NotAnInstanceBuilder exceptions
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder;
+// example 1: we catch only NoSuchFactory exceptions
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 
 try {
-    throw NotAnInstanceBuilder::newFromNonCallable("trout");
+    throw NoSuchFactory::newFromFactoryName("trout");
 }
-catch(NotAnInstanceBuilder $e) {
+catch(NoSuchFactory $e) {
     // ...
 }
 ```
 
 ```php
-// example 2: catch all exceptions thrown by the Dependency-Injection Containers Library
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder;
+// example 2: catch all exceptions thrown by the DIContainers Library
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersException;
 
 try {
-    throw NotAnInstanceBuilder::newFromNonCallable("trout");
+    throw NoSuchFactory::newFromFactoryName("trout");
 }
 catch(DIContainersException $e) {
     // ...
@@ -123,11 +119,11 @@ catch(DIContainersException $e) {
 ```php
 // example 3: catch all exceptions where something went wrong that
 // should never happen
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder;
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
 
 try {
-    throw NotAnInstanceBuilder::newFromNonCallable("trout");
+    throw NoSuchFactory::newFromFactoryName("trout");
 }
 catch(HttpRuntimeErrorException $e) {
     $httpStatus = $e->getHttpStatus();
@@ -137,11 +133,11 @@ catch(HttpRuntimeErrorException $e) {
 
 ```php
 // example 4: catch all exceptions that map onto a HTTP status
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder;
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 use GanbaroDigital\HttpStatus\Interfaces\HttpException;
 
 try {
-    throw NotAnInstanceBuilder::newFromNonCallable("trout");
+    throw NoSuchFactory::newFromFactoryName("trout");
 }
 catch(HttpException $e) {
     $httpStatus = $e->getHttpStatus();
@@ -151,11 +147,11 @@ catch(HttpException $e) {
 
 ```php
 // example 5: catch all runtime exceptions
-use GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder;
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 use RuntimeException;
 
 try {
-    throw NotAnInstanceBuilder::newFromNonCallable("trout");
+    throw NoSuchFactory::newFromFactoryName("trout");
 }
 catch(RuntimeException $e) {
     // ...
@@ -166,17 +162,16 @@ catch(RuntimeException $e) {
 
 Here is the contract for this class:
 
-    GanbaroDigital\DIContainers\V1\Exceptions\NotAnInstanceBuilder
+    GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory
      [x] Can instantiate
      [x] Is d i containers exception
      [x] Is parameterised exception
      [x] Is runtime exception
      [x] Is http runtime error exception
      [x] Maps to unexpected error status
-     [x] Can build from bad instance builders
-     [x] Exception message contains caller
-     [x] Exception message contains exception alias
-     [x] Exception message contains type of bad builder
+     [x] Can build from factory name
+     [x] Can pass caller filter into new from factory name
+     [x] New from factory name will use default caller filter if no filter provided
 
 Class contracts are built from this class's unit tests.
 
@@ -209,4 +204,5 @@ None at this time.
 
 ## See Also
 
-* [`InstanceBuilders`](../InstanceBuilders/InstanceBuilders.html) - factory-driven dependency injection container
+* [`FactoryList`](../Interfaces/FactoryList.html) - interface for a factory-driven dependency-injection container
+* [`FactoryListContainer`](../InstanceBuilders/FactoryListContainer.html) - factory-driven dependency-injection container
