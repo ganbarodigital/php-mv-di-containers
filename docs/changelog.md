@@ -18,6 +18,7 @@ pageflow_next_text: Contributing
   - added `DIContainersExceptions`
 * Added DI container that returns invokable factories
   - added `FactoryListContainer` DI container
+  - added `ContainerIsReadOnly` exception
   - added `NoSuchFactory` exception
   - added `NotAFactory` exception
   - added `NotAListOfFactories` exception
