@@ -9,8 +9,8 @@ pageflow_next_text: NotAListOfFactories class
 
 # NotAFactory
 
-<div class="callout warning" markdown="1">
-Not yet in a tagged release
+<div class="callout info" markdown="1">
+Since v1.2016050901
 </div>
 
 ## Description

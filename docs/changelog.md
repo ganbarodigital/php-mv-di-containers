@@ -10,6 +10,10 @@ pageflow_next_text: Contributing
 
 ## develop branch
 
+## v1.2016050901
+
+Released Monday 9th May 2016.
+
 ### New
 
 * Added generic type for catching all exceptions that this library declares

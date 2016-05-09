@@ -7,8 +7,8 @@ pageflow_prev_text: Interfaces
 
 # FactoryList
 
-<div class="callout warning">
-Not yet in a tagged release
+<div class="callout info" markdown="1">
+Since v1.2016050901
 </div>
 
 ## Description
