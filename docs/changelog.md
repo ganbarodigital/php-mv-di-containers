@@ -17,6 +17,7 @@ pageflow_next_text: Contributing
 * Added a DI container that contains builders for every exception in this library
   - added `DIContainersExceptions`
 * Added DI container that returns invokable factories
+  - added `FactoryList` interface
   - added `FactoryListContainer` DI container
   - added `ContainerIsReadOnly` exception
   - added `NoSuchFactory` exception
