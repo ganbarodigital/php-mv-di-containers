@@ -17,6 +17,6 @@ Whenever you are type-hinting your PHP code, you should use one of these interfa
 
 Entity | Description
 -------|------------
-[`FactoryList`](FactoryList.html) | interface for factory-driven DI container
+[`FactoryList`](FactoryList.html) | interface for DI containers for factories
 
 Click on any of the interfaces for full details.

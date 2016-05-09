@@ -120,5 +120,5 @@ None at this time.
 
 ## See Also
 
-* [`FactoryList`](../Interfaces/FactoryList.html) - interface for a factory-driven dependency-injection container
-* [`FactoryListContainer`](../InstanceBuilders/FactoryListContainer.html) - factory-driven dependency-injection container
+* [`FactoryList`](../Interfaces/FactoryList.html) - interface for a dependency-injection container for factories
+* [`FactoryListContainer`](../FactoryList/FactoryListContainer.html) - dependency-injection container for factories

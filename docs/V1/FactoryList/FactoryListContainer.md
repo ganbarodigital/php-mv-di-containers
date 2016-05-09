@@ -354,7 +354,7 @@ None at this time.
 
 ## See Also
 
-* [`FactoryList`](../Interfaces/FactoryList.html) - interface for a factory-driven dependency-injection container
+* [`FactoryList`](../Interfaces/FactoryList.html) - interface for a dependency-injection container for factories
 * [`NoSuchFactory`](../Exceptions/NoSuchFactory.html) - exception thrown when we're asked for a factory, and have no factory registered under that name
 * [`NotAFactory`](../Exceptions/NotAFactory.html) - exception thrown when we're given something that we cannot use as an factory
 * [`NotAListOfFactories`](../Exceptions/NotAListOfFactories.html) - exception thrown when we're given something we cannot use to build this container

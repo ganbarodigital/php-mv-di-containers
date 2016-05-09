@@ -11,7 +11,7 @@ pageflow_next_text: FactoryListContainer class
 
 This is a list of all of the classes available in the `GanbaroDigital\DIContainers\V1\FactoryList` namespace.
 
-This component provides a factory-driven DI container, plus related method classes.
+This component provides a DI container for factories, plus related method classes.
 
 This container was originally created as a way of encapsulating `Library2` inside `Library1`.
 
@@ -22,6 +22,6 @@ This container was originally created as a way of encapsulating `Library2` insid
 
 Entity | Description
 -------|------------
-[`FactoryListContainer`](FactoryListContainer.html) | factory-driven DI container
+[`FactoryListContainer`](FactoryListContainer.html) | DI container for factories
 
 Click on any of the classes for full details.
