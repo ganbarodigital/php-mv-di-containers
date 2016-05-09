@@ -31,7 +31,7 @@ menu:
                 relativeUrl: index.html
             background:
                 text: Background
-                relativeurl: why-another-di-solution.html
+                relativeUrl: why-another-di-solution.html
             license:
                 text: License
                 relativeUrl: license.html
@@ -62,9 +62,12 @@ menu:
             home:
                 text: Introduction
                 relativeUrl: V1/index.html
-            FactoryList:
-                text: FactoryList
-                relativeUrl: V1/FactoryList/index.html
             exceptions:
                 text: Exceptions
                 relativeUrl: V1/Exceptions/index.html
+            Interfaces:
+                text: Interfaces
+                relativeUrl: V1/Interfaces/index.html
+            FactoryList:
+                text: FactoryList
+                relativeUrl: V1/FactoryList/index.html
