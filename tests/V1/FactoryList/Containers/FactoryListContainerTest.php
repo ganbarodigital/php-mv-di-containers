@@ -249,6 +249,8 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::offsetSet
+     * @covers ::setReadWrite
+     * @covers ::requireReadWrite
      */
     public function testCanRegisterAdditionalFactories()
     {
@@ -276,6 +278,8 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::offsetSet
+     * @covers ::setReadWrite
+     * @covers ::requireReadWrite
      * @dataProvider provideNonCallablesToTest
      * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory
      */
@@ -302,6 +306,8 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::offsetUnset
+     * @covers ::setReadWrite
+     * @covers ::requireReadWrite
      */
     public function testCanForgetAFactory()
     {
@@ -328,6 +334,8 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::offsetUnset
+     * @covers ::setReadWrite
+     * @covers ::requireReadWrite
      */
     public function testDoesNotThrowAnExceptionWhenForgettingAFactoryTwice()
     {
@@ -407,6 +415,7 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::offsetSet
+     * @covers ::requireReadWrite
      * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\ContainerIsReadOnly
      */
     public function testCannotAddFactoryWhenReadOnly()
@@ -430,6 +439,7 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::offsetUnset
+     * @covers ::requireReadWrite
      * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\ContainerIsReadOnly
      */
     public function testCannotForgetFactoryWhenReadOnly()
@@ -456,6 +466,7 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
      * @covers ::setReadWrite
      * @covers ::isReadOnly
      * @covers ::isReadWrite
+     * @covers ::requireReadWrite
      */
     public function testCanPutIntoReadWriteMode()
     {

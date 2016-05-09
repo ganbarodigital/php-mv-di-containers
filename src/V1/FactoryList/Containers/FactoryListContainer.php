@@ -48,14 +48,21 @@ use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 use GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory;
 use GanbaroDigital\DIContainers\V1\Exceptions\NotAListOfFactories;
 use GanbaroDigital\DIContainers\V1\Exceptions\NotAFactoryList;
+use GanbaroDigital\DIContainers\V1\Interfaces\EntityContainer;
 use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
+use GanbaroDigital\MissingBits\Entities\WriteProtectedEntity;
+use GanbaroDigital\MissingBits\Entities\WriteProtectTab;
 
 /**
  * An entity which holds a list of registered factories. Can be
  * accessed as an array.
  */
-class FactoryListContainer implements FactoryList
+class FactoryListContainer
+  implements FactoryList, WriteProtectedEntity
 {
+    // satisfies WriteProtectedEntity interface
+    use WriteProtectTab;
+
     /**
      * the list of factories
      *
@@ -76,13 +83,6 @@ class FactoryListContainer implements FactoryList
      * @var FactoryList
      */
     private $exceptions;
-
-    /**
-     * is this container currently read-only?
-     *
-     * @var boolean
-     */
-    private $isReadOnly = false;
 
     /**
      * create a managed list of factories
@@ -183,9 +183,7 @@ class FactoryListContainer implements FactoryList
     public function offsetSet($factoryName, $factory)
     {
         // are we allowed to edit this container?
-        if ($this->isReadOnly()) {
-            throw $this->exceptions['ContainerIsReadOnly::newFromContainer']($this);
-        }
+        $this->requireReadWrite();
 
         // do we have an acceptable factory?
         if (!is_callable($factory)) {
@@ -205,9 +203,7 @@ class FactoryListContainer implements FactoryList
     public function offsetUnset($factoryName)
     {
         // are we allowed to edit this container?
-        if ($this->isReadOnly()) {
-            throw $this->exceptions['ContainerIsReadOnly::newFromContainer']($this);
-        }
+        $this->requireReadWrite();
 
         // it's PHP convention that attempting to unset() something that is
         // already unset() is not considered an error
@@ -230,46 +226,16 @@ class FactoryListContainer implements FactoryList
     }
 
     /**
-     * can we edit this entity?
+     * are we allowed to edit this container?
      *
-     * @return boolean
-     *         FALSE if we can edit this container
-     *         TRUE otherwise
+     * @return void
+     * @throws ContainerIsReadOnly
      */
-    public function isReadOnly()
+    protected function requireReadWrite()
     {
-        return $this->isReadOnly;
-    }
-
-    /**
-     * can we edit this container?
-     *
-     * @return boolean
-     *         TRUE if we can edit this container
-     *         FALSE otherwise
-     */
-    public function isReadWrite()
-    {
-        if ($this->isReadOnly) {
-            return false;
+        // are we allowed to edit this container?
+        if ($this->isReadOnly()) {
+            throw $this->exceptions['ContainerIsReadOnly::newFromContainer']($this);
         }
-
-        return true;
-    }
-
-    /**
-     * disable editing this container
-     */
-    public function setReadOnly()
-    {
-        $this->isReadOnly = true;
-    }
-
-    /**
-     * enable editing this container
-     */
-    public function setReadWrite()
-    {
-        $this->isReadOnly = false;
     }
 }

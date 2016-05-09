@@ -1,10 +1,8 @@
 ---
 currentSection: v1
 currentItem: FactoryList
-pageflow_prev_url: HasOverridden.html
-pageflow_prev_text: HasOverridden check
-pageflow_next_url: FilterNonOverriddenFactoryList.html
-pageflow_next_text: FilterNonOverriddenFactoryList filter
+pageflow_prev_url: index.html
+pageflow_prev_text: FactoryList namespace
 ---
 
 # FactoryListContainer
@@ -33,8 +31,10 @@ use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
 // our base classes and interfaces
 use ArrayAccess;
 use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
+use GanbaroDigital\MissingBits\Entities\WriteProtectedEntity;
 
-class FactoryListContainer implements FactoryList
+class FactoryListContainer
+  implements FactoryList, WriteProtectedEntity
 {
     /**
      * create a managed list of factories
@@ -72,6 +72,7 @@ class FactoryListContainer implements FactoryList
      * @return boolean
      *         FALSE if we can edit this container
      *         TRUE otherwise
+     * @inheritedFrom WriteProtectedEntity
      */
     public function isReadOnly();
 
@@ -81,16 +82,23 @@ class FactoryListContainer implements FactoryList
      * @return boolean
      *         TRUE if we can edit this container
      *         FALSE otherwise
+     * @inheritedFrom WriteProtectedEntity
      */
     public function isReadWrite();
 
     /**
      * disable editing this container
+     *
+     * @return void
+     * @inheritedFrom WriteProtectedEntity
      */
     public function setReadOnly();
 
     /**
      * enable editing this container
+     *
+     * @return void
+     * @inheritedFrom WriteProtectedEntity
      */
     public function setReadWrite();
 }
