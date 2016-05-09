@@ -151,11 +151,13 @@ class MyClass
 
 Never mind bending the rules, this breaks the rules of existing dependency-injection practice and dependency-injection containers.
 
-A goldern rule of DI containers is that you never pass the DI container itself into objects. This is considered one of the top anti-patterns for DI. And for _service locators_, we completely agree. But we consider our list of exceptions a special case. We're not passing in a list of services; we're passing in a list of types (and their constructors) to use.
+* A goldern rule of DI containers is that you never pass the DI container itself into objects. This is considered one of the top anti-patterns for DI. And for _service locators_, we completely agree. But we consider our list of exceptions a special case. We're not passing in a list of services; we're passing in a list of types (and their constructors) to use.
 
-Passing in the list of exceptions is ultimately more readable and more manageable than passing in each exception class as a separate parameter. It's also way more resilient to change in the future.
+  Passing in the list of exceptions is ultimately more readable and more manageable than passing in each exception class as a separate parameter. It's also way more resilient to change in the future.
 
-This is the kind of thing that people get their soapbox out for!
+  This is the kind of thing that people get their soapbox out for!
+
+* DI containers call factories for you, and return a ready-built object for you to use. We want a DI container that returns the factory for us to call from our own code.
 
 Ignoring the lynch-mobs for now, passing in an array of exception factories turned out to be an incomplete solution.
 
@@ -167,6 +169,7 @@ One of our guiding principles is to make it as easy as possible to detect progra
 We looked around at the existing DI containers, but couldn't find one that met our needs.
 
 * We don't want a service locator (for this specific problem).
+* We don't want the DI container to call the factory for us.
 * We don't want autowiring at all.
 * We want to enforce the required properties of our list.
 * We want to be able to perform additional robustness checks (e.g. making sure `Library1` has provided exceptions for everything `Library2` defines) in unit tests.
