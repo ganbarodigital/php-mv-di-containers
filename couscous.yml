@@ -1,0 +1,73 @@
+---
+template:
+    url: https://github.com/ganbarodigital/couscous-gd-docs
+
+include:
+    - docs
+
+exclude:
+    - review
+    - src
+    - tests
+    - vendor
+
+baseUrl: http://ganbarodigital.github.io/php-mv-di-containers
+
+github:
+    user: ganbarodigital
+    repo: php-mv-di-containers
+
+title: Dependency-Injection Containers Library for PHP
+subTitle: Easy-to-use dependency injection for your apps and libraries
+
+menu:
+    overview:
+        text: Overview
+        relativeUrl: index.html
+
+        items:
+            home:
+                text: Home
+                relativeUrl: index.html
+            background:
+                text: Background
+                relativeUrl: why-another-di-solution.html
+            license:
+                text: License
+                relativeUrl: license.html
+            installation:
+                text: Installation
+                relativeUrl: installation.html
+            multivariant:
+                text: Multi-Variant
+                relativeUrl: multivariant.html
+            changelog:
+                text: Changelog
+                relativeUrl: changelog.html
+            contributing:
+                text: Contributing
+                relativeUrl: contributing.html
+            codeofconduct:
+                text: Code of Conduct
+                relativeUrl: code-of-conduct.html
+            authors:
+                text: Authors
+                relativeUrl: authors.html
+
+    v1:
+        text: Version 1.x
+        relativeUrl: V1/index.html
+
+        items:
+            home:
+                text: Introduction
+                relativeUrl: V1/index.html
+            exceptions:
+                text: Exceptions
+                relativeUrl: V1/Exceptions/index.html
+            Interfaces:
+                text: Interfaces
+                relativeUrl: V1/Interfaces/index.html
+            FactoryList:
+                text: FactoryList
+                relativeUrl: V1/FactoryList/index.html
