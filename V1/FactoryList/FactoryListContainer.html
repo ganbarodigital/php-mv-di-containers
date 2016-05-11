@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[if lt IE 9]>
+            <script src="assets/html5shiv.js"></script>
+            <script src="assets/html5printshiv.js"></script>
+        <![endif]-->
+        <meta charset="utf-8"/>
+        <title>Dependency-Injection Containers Library for PHP from Ganbaro Digital</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://ganbarodigital.github.io/php-mv-di-containers/assets/docs.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="http://ganbarodigital.github.io/php-mv-di-containers/assets/prism.css">
+        <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/prism.js"></script>
+    </head>
+    <body data-ishi-anchors="1">
+        <header role="banner">
+            <div>
+                <p style="font-size: 34px; padding-top: 10px">Dependency-Injection Containers Library for PHP</p>
+                <p style="font-size: 18px; border-bottom: 1px solid; padding-bottom: 10px">Easy-to-use dependency injection for your apps and libraries</p>
+            </div>
+            <!--<a href="http://ganbarodigital.github.io/php-mv-di-containers/index.html">
+                <img src="http://ganbarodigital.github.io/php-mv-di-containers/assets/ganbarodigital.svg" width="60" height="60" style="vertical-align: middle; float: left; margin-right: 15px">
+            </a>-->
+            <nav class="navbar topbar">
+                <ul>
+                                            <li class="">
+                            <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/index.html">Overview</a>
+                        </li>
+                                            <li class="current">
+                            <a class="current" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/index.html">Version 1.x</a>
+                        </li>
+                                    </ul>
+            </nav>
+        </header>
+                                                                            <header role="subnav">
+                        <nav class="navbar">
+                            <ul>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/index.html">Introduction</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/Exceptions/index.html">Exceptions</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/Interfaces/index.html">Interfaces</a>
+                                    </li>
+                                                                    <li class="current">
+                                        <a class="current" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/FactoryList/index.html">FactoryList</a>
+                                    </li>
+                                                            </ul>
+                        </nav>
+                    </header>
+                                            <main role="main">
+                        <nav class="pageflow">
+              <ul>
+                                    <li><a href="index.html">Prev: FactoryList namespace</a></li>
+                                                      <li></li>
+                                </ul>
+            </nav>
+            
+            <article>
+                <h1 id="factorylistcontainer">FactoryListContainer</h1>
+<div class="callout info">
+<p>Since v1.2016050901</p>
+</div>
+<h2 id="description">Description</h2>
+<p><code>FactoryListContainer</code> is a container. It holds a list of factory methods and functions, indexed by name.</p>
+<ul>
+<li><em>factory name</em> - the lookup key for the factory method or function</li>
+<li><em>factory</em> - the factory method or function (can be any PHP <code>callable</code>, including <code>__invoke</code>able objects)</li>
+</ul>
+<p><code>FactoryListContainer</code> is a specialist dependency-injection container. It doesn't build dependencies for you. When you use it, it returns factory methods for you to call from your own code.</p>
+<h2 id="public-interface">Public Interface</h2>
+<p><code>FactoryListContainer</code> has the following public interface:</p>
+<pre><code class="language-php">// `FactoryListContainer` lives in this namespace
+use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+// our base classes and interfaces
+use ArrayAccess;
+use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
+use GanbaroDigital\MissingBits\Entities\WriteProtectedEntity;
+
+class FactoryListContainer
+  implements FactoryList, WriteProtectedEntity
+{
+    /**
+     * create a managed list of factories
+     *
+     * the array has the following format:
+     * - 'key' is the name or alias for your factor
+     * - 'value' is a callable that will return something
+     *
+     * examples of keys include:
+     *
+     * - 'NotAFactoryList::newFromVar'
+     * - 'NotAFactory::newFromNonCallable'
+     *
+     * the only requirements on 'value' are that
+     * - it is a callable
+     *
+     * @param array $factories
+     *        the list of factories to define
+     * @param FactoryList $exceptions
+     *        the list of exceptions to throw
+     */
+    public function __construct($factories, FactoryList $exceptions = null);
+
+    /**
+     * return the full list of aliases and builders as a real PHP array
+     *
+     * @return array
+     * @inheritedFrom FactoryList
+     */
+    public function getList();
+
+    /**
+     * can we edit this entity?
+     *
+     * @return boolean
+     *         FALSE if we can edit this container
+     *         TRUE otherwise
+     * @inheritedFrom WriteProtectedEntity
+     */
+    public function isReadOnly();
+
+    /**
+     * can we edit this container?
+     *
+     * @return boolean
+     *         TRUE if we can edit this container
+     *         FALSE otherwise
+     * @inheritedFrom WriteProtectedEntity
+     */
+    public function isReadWrite();
+
+    /**
+     * disable editing this container
+     *
+     * @return void
+     * @inheritedFrom WriteProtectedEntity
+     */
+    public function setReadOnly();
+
+    /**
+     * enable editing this container
+     *
+     * @return void
+     * @inheritedFrom WriteProtectedEntity
+     */
+    public function setReadWrite();
+}</code></pre>
+<h2 id="how-to-use">How To Use</h2>
+<h3 id="defining-dependencies">Defining Dependencies</h3>
+<p><code>FactoryListContainer</code> is a factory-driven DI container. You give it a list of factories (the factory) and their names:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer([
+    'UnsupportedType::newFromVar' =&gt; [ UnsupportedType::class, 'newFromVar' ],
+    'NoSuchClass::newFromClassName' =&gt; [ NoSuchClass::class, 'newFromClassName' ],
+]);</code></pre>
+<p>The array key is a string, and can be anything you like. We recommend that you use a <em>classname::methodName</em> pair. That makes it easier for other libraries (or apps) to replace your dependencies with their own should they need to.</p>
+<div class="callout info">
+<p><code>FactoryListContainer</code> doesn't parse the array key. It's only used as a lookup key.</p>
+<p>There are no plans to add any kind of magic in the future. We believe that magic makes it harder for someone else to reason about your code - especially if they've never used the same libraries and frameworks before.</p>
+</div>
+<p>The array value has to be a valid PHP <code>callable</code>. This can be any one of:</p>
+<ul>
+<li>class name and static public method name pair</li>
+<li>object and non-static public method name pair</li>
+<li>global function name</li>
+<li>an object that has an <code>__invoke()</code> method</li>
+<li>an anonymous function</li>
+</ul>
+<p>Internally, we use PHP's <code>is_callable()</code> function to check the array value. We throw an exception if <code>is_callable()</code> rejects any of the array values.</p>
+<p>The array value can accept any input parameters that it wants.</p>
+<div class="callout info">
+<p>The array value - the factory - should create and return a new object every time it is called.</p>
+</div>
+<h3 id="creating-dependencies">Creating Dependencies</h3>
+<p>Treat <code>FactoryListContainer</code> as a PHP array that contains functions you can call:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer([
+    'UnsupportedType::newFromVar' =&gt; [ UnsupportedType::class, 'newFromVar' ],
+    'NoSuchClass::newFromClassName' =&gt; [ NoSuchClass::class, 'newFromClassName' ],
+]);
+
+// use the DI container to create our exception
+$exception = $deps['NoSuchClass::newFromClassName'](...);</code></pre>
+<p>In this example, we retrieve the factory from the container, and then call it ourselves. We are responsible for passing in any parameters that our chosen factory expects. As far as PHP is concerned, we're calling a PHP <code>callable</code> directly from our code.</p>
+<div class="callout warning">
+<p>Note that <code>FactoryListContainer</code> itself does not create your dependency. It returns the <code>callable</code> factory for you to call.</p>
+</div>
+<div class="callout warning">
+<p>Also be aware that <code>FactoryListContainer</code> is not a <em>service locator</em>. Every time you use one of the factories in the <code>FactoryListContainer</code> to create a dependency, you are creating a new instance of your dependency.</p>
+</div>
+<h3 id="adding-or-replacing-dependencies">Adding Or Replacing Dependencies</h3>
+<p><code>FactoryListContainer</code> is an entity. It's read-only by default. You can put it into read-write mode and then treat it as a PHP array:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer([
+    'UnsupportedType::newFromVar' =&gt; [ UnsupportedType::class, 'newFromVar' ],
+]);
+
+// replace the dependency
+$deps-&gt;setReadWrite();
+$deps['UnsupportedType::newFromVar'] = function() { throw new RuntimeException; };</code></pre>
+<div class="callout danger">
+<p>In the code that ships to Production, treat <code>FactoryListContainer</code> as a read-only container.</p>
+<p>Only use this feature in your unit tests.</p>
+</div>
+<h3 id="removing-dependencies">Removing Dependencies</h3>
+<p><code>FactoryListContainer</code> is an entity. It's read-only by default. You can put it into read-write mode and then treat it as a PHP array:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer([
+    'UnsupportedType::newFromVar' =&gt; [ UnsupportedType::class, 'newFromVar' ],
+]);
+
+// remove the dependency
+$deps-&gt;setReadWrite();
+unset($deps['UnsupportedType::newFromVar']);</code></pre>
+<div class="callout danger">
+<p>In the code that ships to Production, treat <code>FactoryListContainer</code> as a read-only container.</p>
+<p>Only use this feature in your unit tests.</p>
+</div>
+<h2 id="exceptions-thrown">Exceptions Thrown</h2>
+<h3 id="when-you-dont-provide-a-list-of-factories">When You Don't Provide A List Of Factories</h3>
+<p>If you do something like this:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+// cannot use NULL as a list of factories
+$deps = new FactoryListContainer(null);
+
+// cannot use booleans as a list of factories
+$deps = new FactoryListContainer(true);
+$deps = new FactoryListContainer(false);
+
+// cannot use callables as a list of factories
+$deps = new FactoryListContainer(function(){});
+
+// cannot use doubles as a list of factories
+$deps = new FactoryListContainer(3.1415927);
+
+// cannot use integers as a list of factories
+$deps = new FactoryListContainer(100);
+
+// cannot use objects as a list of factories
+$deps = new FactoryListContainer(new \stdClass);
+
+// cannot use resources as a list of factories
+$deps = new FactoryListContainer(STDIN);
+
+// cannot use strings as a list of factories
+$deps = new FactoryListContainer("BUILD ALL THE THINGS");</code></pre>
+<p>then <code>FactoryListContainer</code> will throw a <code>NotAListOfFactories</code> exception.</p>
+<h3 id="when-you-provide-something-that-isnt-a-factory">When You Provide Something That Isn't A Factory</h3>
+<p>If you do something like this:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer([
+    // oops - a class name on its own isn't a PHP callable
+    'UnsupportedType::newFromVar' =&gt; UnsupportedType::class,
+]);</code></pre>
+<p>then <code>FactoryListContainer</code> will throw a <code>NotAFactory</code> exception.</p>
+<h3 id="when-the-factory-cannot-be-found">When The Factory Cannot Be Found</h3>
+<p>If you do something like this:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer([
+    'UnsupportedType::newFromVar' =&gt; [ UnsupportedType::class, 'newFromVar' ],
+]);
+
+// oops ... 'NoSuchClass::newFromClassName' isn't registered!
+$exception = $deps['NoSuchClass::newFromClassName'](...);</code></pre>
+<p>then <code>FactoryListContainer</code> will throw a <code>NoSuchFactory</code> exception.</p>
+<h3 id="attempting-to-edit-a-read-only-container">Attempting To Edit A Read-Only Container</h3>
+<p>If you do something like this:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer();
+
+// oops - container is in read-only mode
+$deps['UnsupportedType::newFromVar'] = [ UnsupportedType::class, 'newFromVar' ];</code></pre>
+<p>then <code>FactoryListContainer</code> will throw a <code>ContainerIsReadOnly</code> exception.</p>
+<p>You can avoid this exception by making the container read-write first:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+$deps = new FactoryListContainer();
+
+$deps-&gt;setReadWrite();
+$deps['UnsupportedType::newFromVar'] = [ UnsupportedType::class, 'newFromVar' ];</code></pre>
+<h2 id="class-contract">Class Contract</h2>
+<p>Here is the contract for this class:</p>
+<pre><code>GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory
+ [x] Can instantiate
+ [x] Is d i containers exception
+ [x] Is parameterised exception
+ [x] Is runtime exception
+ [x] Is http runtime error exception
+ [x] Maps to unexpected error status
+ [x] Can build from factory name
+ [x] Can pass caller filter into new from factory name
+ [x] New from factory name will use default caller filter if no filter provided</code></pre>
+<p>Class contracts are built from this class's unit tests.</p>
+<div class="callout success">
+Future releases of this class will not break this contract.
+</div>
+<div class="callout info">
+<p>Future releases of this class may add to this contract. New additions may include:</p>
+<ul>
+<li>clarifying existing behaviour (e.g. stricter contract around input or return types)</li>
+<li>add new behaviours (e.g. extra class methods)</li>
+</ul>
+</div>
+<div class="callout warning">
+<p>When you use this class, you can only rely on the behaviours documented by this contract.</p>
+<p>If you:</p>
+<ul>
+<li>find other ways to use this class,</li>
+<li>or depend on behaviours that are not covered by a unit test,</li>
+<li>or depend on undocumented internal states of this class,</li>
+</ul>
+<p>... your code may not work in the future.</p>
+</div>
+<h2 id="notes">Notes</h2>
+<p>None at this time.</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="../Interfaces/FactoryList.html"><code>FactoryList</code></a> - interface for a dependency-injection container for factories</li>
+<li><a href="../Exceptions/NoSuchFactory.html"><code>NoSuchFactory</code></a> - exception thrown when we're asked for a factory, and have no factory registered under that name</li>
+<li><a href="../Exceptions/NotAFactory.html"><code>NotAFactory</code></a> - exception thrown when we're given something that we cannot use as an factory</li>
+<li><a href="../Exceptions/NotAListOfFactories.html"><code>NotAListOfFactories</code></a> - exception thrown when we're given something we cannot use to build this container</li>
+<li><a href="../../why-another-di-solution.html"><code>Why Another DI Solution?</code></a> - the story of how this container came to be</li>
+</ul>
+            </article>
+
+                        <nav class="pageflow">
+              <ul>
+                                    <li><a href="index.html">Prev: FactoryList namespace</a></li>
+                                                      <li></li>
+                                </ul>
+            </nav>
+                    </main>
+
+        <aside class="sidebar">
+            <h2>This Page</h2>
+            <nav class="toc" data-type="ishi-toc" data-max-depth="3">
+            </nav>
+        </aside>
+        <footer>
+            <div class="strapline">
+                <p>Copyright &copy; 2015 <a href="http://ganbarodigital.com">Ganbaro Digital Ltd</a>. Released under the <a href="http://ganbarodigital.github.io/php-mv-di-containers/license.html">New BSD</a> license.
+                                            Find Dependency-Injection Containers Library for PHP on <a href="https://github.com/ganbarodigital/php-mv-di-containers">GitHub</a>.
+                                        Built with <a href="http://couscous.io/">Couscous</a>.
+                </p>
+            </div>
+        </footer>
+    <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/laroux.js"></script>
+    <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/ishi.js"></script>
+    </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[if lt IE 9]>
+            <script src="assets/html5shiv.js"></script>
+            <script src="assets/html5printshiv.js"></script>
+        <![endif]-->
+        <meta charset="utf-8"/>
+        <title>Dependency-Injection Containers Library for PHP from Ganbaro Digital</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://ganbarodigital.github.io/php-mv-di-containers/assets/docs.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="http://ganbarodigital.github.io/php-mv-di-containers/assets/prism.css">
+        <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/prism.js"></script>
+    </head>
+    <body data-ishi-anchors="1">
+        <header role="banner">
+            <div>
+                <p style="font-size: 34px; padding-top: 10px">Dependency-Injection Containers Library for PHP</p>
+                <p style="font-size: 18px; border-bottom: 1px solid; padding-bottom: 10px">Easy-to-use dependency injection for your apps and libraries</p>
+            </div>
+            <!--<a href="http://ganbarodigital.github.io/php-mv-di-containers/index.html">
+                <img src="http://ganbarodigital.github.io/php-mv-di-containers/assets/ganbarodigital.svg" width="60" height="60" style="vertical-align: middle; float: left; margin-right: 15px">
+            </a>-->
+            <nav class="navbar topbar">
+                <ul>
+                                            <li class="current">
+                            <a class="current" href="http://ganbarodigital.github.io/php-mv-di-containers/index.html">Overview</a>
+                        </li>
+                                            <li class="">
+                            <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/index.html">Version 1.x</a>
+                        </li>
+                                    </ul>
+            </nav>
+        </header>
+                                                        <header role="subnav">
+                        <nav class="navbar">
+                            <ul>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/index.html">Home</a>
+                                    </li>
+                                                                    <li class="current">
+                                        <a class="current" href="http://ganbarodigital.github.io/php-mv-di-containers/why-another-di-solution.html">Background</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/license.html">License</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/installation.html">Installation</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/multivariant.html">Multi-Variant</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/changelog.html">Changelog</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/contributing.html">Contributing</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/code-of-conduct.html">Code of Conduct</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/authors.html">Authors</a>
+                                    </li>
+                                                            </ul>
+                        </nav>
+                    </header>
+                                                                <main role="main">
+                        <nav class="pageflow">
+              <ul>
+                                    <li><a href="index.html">Prev: Introduction</a></li>
+                                                      <li><a href="license.html">Next: License</a></li>
+                                </ul>
+            </nav>
+            
+            <article>
+                <h1 id="why-another-di-solution">Why Another DI Solution?</h1>
+<p>There are plenty of existing dependency-injection solutions already available for PHP. So why create another one?</p>
+<p>It all started with an overhaul of the way the Ganbaro Digital libraries create and throw exceptions.</p>
+<h2 id="exceptional-needs">Exceptional Needs</h2>
+<h3 id="catch-ladders">Catch Ladders</h3>
+<p>The Ganbaro Digital PHP libraries use exceptions for all error handling. Many of the libraries are built on top of other libraries. This led to situations like this:</p>
+<pre><code class="language-php">try {
+    $obj-&gt;doSomething();
+}
+catch (Library1\Exceptions\UnsupportedType $e) {
+    // ...
+}
+catch (Library2\Exceptions\UnsupportedType $e) {
+    // ...
+}</code></pre>
+<p>In the example above, any of the libraries can throw an exception that means the same thing (<code>UnsupportedType</code>). But each library (rightly) has its own class to do so. There are several problems with this situation:</p>
+<ul>
+<li>If you're calling functionality provided by <code>Library1</code>, you shouldn't need to know that it relies on <code>Library2</code> - or any other libraries for that matter. What if a future version of <code>Library1</code> switches to a different set of dependencies? All of a sudden, your code (the person using <code>Library1</code>) is potentially broken. This is a clear breach of the encapsulation principle.</li>
+<li>Your code ends up being littered with duplicated <code>catch</code> blocks. In PHP, each <code>catch</code> block can only catch a single type of exception at a time. If you need to catch and handle <code>UnsupportedType</code> with dedicated code, you're forced to have multiple <code>catch</code> blocks, each containing duplicated code.</li>
+<li>The larger the <code>catch</code> ladder, the harder it is to reason about the code's behaviour (exactly in the same way that <code>if / else</code> ladders and the pyramid of doom does). Ideally we want to reduce or even eliminate <code>catch</code> ladders wherever we can.</li>
+</ul>
+<p>The encapsulation principle is also breached if both <code>Library1</code> and <code>Library2</code> agree to throw the same <code>UnsupportedType</code> exception from a common base library.</p>
+<p>What does a completely-encapsulated exception strategy look like?</p>
+<h3 id="ideal-encapsulation">Ideal Encapsulation</h3>
+<p>What we want to be able to code is this:</p>
+<pre><code class="language-php">try {
+    $obj-&gt;doSomething();
+}
+catch (Library1\Exceptions\UnsupportedType $e) {
+    // ...
+}</code></pre>
+<p>and make it <code>Library1</code>s job to only ever return <code>Library1\Exceptions\UnsupportedType</code> regardless of what kind of exception <code>Library1</code>s dependencies choose to throw.</p>
+<p>That can be done inside <code>Library1</code> like this:</p>
+<pre><code class="language-php">try {
+    $library2obj-&gt;doSomething();
+}
+catch (Library2\Exceptions\UnsupportedType $e) {
+    throw new Library1\Exceptions\UnsupportedType(...);
+}</code></pre>
+<p>but this switches one set of problems for another:</p>
+<ul>
+<li><code>Library1</code> ends up being littered with <code>try / catch</code> blocks that are used only for translating exceptions from one type to another. It's a lot of extra code to write - and to test.</li>
+<li>The exception stack trace is no longer complete and accurate. It now starts from where <code>Library1</code> translated the original exception. That might not be enough to diagnose and resolve the issue.</li>
+</ul>
+<p>What we really want is to tell <code>Library2</code> et al which exceptions we want them to throw. That sounds like a classic dependency-injection approach.</p>
+<p>Only, as we'll see, it really isn't.</p>
+<h3 id="traditional-di---pass-in-ready-built-objects">Traditional DI - Pass In Ready-Built Objects</h3>
+<p>The traditional dependency-injection solution is to pass ready-built objects in as parameters. This might be into the constructor or into setter methods. (We're not going to argue about the merits of either approach here).</p>
+<pre><code class="language-php">class MyClass
+{
+    public function __construct(..., UnsupportedType $e1)
+    {
+        // ...
+        $this-&gt;unsupportedType = $e1;
+    }
+
+    public function doSomething()
+    {
+        throw $this-&gt;unsupportedType;
+    }
+}</code></pre>
+<p>That can never work for PHP exceptions.</p>
+<ul>
+<li><a href="http://php.net/manual/en/class.exception.php">PHP exceptions</a> are value objects. Once created, you can't edit them. So in our <code>doSomething()</code> method, there's no way for us to set the exception's message to provide essential information about why the exception has been thrown.</li>
+<li>An exception's stack trace is set when an exception is created. With the traditional DI pattern, the exception is created somewhere away from where it is thrown. As a result, when you dump the exception's stack trace to see where the error occurred, the stack trace doesn't contain that information.</li>
+<li>It doesn't scale. One of our guiding principles is that software should be easy to reason about. Part of that means creating explicit exceptions for each kind of error wherever possible, and avoiding generic exceptions for the most part. If we had to pass each individual exception into a constructor, the constructor would grow to a vast and unwieldy size.</li>
+</ul>
+<p>On top of that, many PHP dependency-injection containers are actually <em>service locators</em>: they return the same instance of an object time and time again. That doesn't work for exceptions, because we want <strong>new</strong> instances each and every time.</p>
+<h3 id="bending-the-rules---pass-in-the-exception-class">Bending The Rules - Pass In The Exception Class</h3>
+<p>In earlier iterations of the Ganbaro Digital libraries, we tried a compromise. Instead of passing in ready-built exceptions (which clearly was a total non-starter), we decided to pass in class names instead.</p>
+<pre><code class="language-php">class MyClass
+{
+    public function __construct(..., $e1)
+    {
+        // ...
+        $this-&gt;unsupportedType = $e1;
+    }
+
+    public function doSomething()
+    {
+        $eType = $this-&gt;unsupportedType;
+        throw new $eType(...);
+    }
+}</code></pre>
+<p>And that worked, to a point.</p>
+<ul>
+<li>Just like attempting to pass in pre-build objects, it doesn't scale. We ended up with constructors that were too large.</li>
+<li>It allowed us to change the exception class being thrown (goal #1 accomplished), but it meant that our replacement exceptions had to have the same constructor as <code>Library2</code>'s exceptions. When we decided to use static factory methods on our exceptions, that became a bit of a problem. Yes, we could hard-code the static factory method everywhere, but that felt like something we should not have to do.</li>
+</ul>
+<h3 id="breaking-the-rules---pass-in-the-list-of-exception-factories">Breaking The Rules - Pass In The List Of Exception Factories</h3>
+<p>What we really wanted to do was to pass in a list of static factory methods - a list of PHP callables - and have our classes use these callables to create the exception right where they're going to be thrown from.</p>
+<pre><code class="language-php">class MyClass
+{
+    public function __construct(..., $exceptionsList)
+    {
+        $this-&gt;exceptionsList = $exceptionsList;
+    }
+
+    public function doSomething()
+    {
+        throw $this-&gt;exceptionsList['UnsupportedType'](...);
+    }
+}</code></pre>
+<p>Never mind bending the rules, this breaks the rules of existing dependency-injection practice and dependency-injection containers.</p>
+<ul>
+<li>
+<p>A goldern rule of DI containers is that you never pass the DI container itself into objects. This is considered one of the top anti-patterns for DI. And for <em>service locators</em>, we completely agree. But we consider our list of exceptions a special case. We're not passing in a list of services; we're passing in a list of types (and their constructors) to use.</p>
+<p>Passing in the list of exceptions is ultimately more readable and more manageable than passing in each exception class as a separate parameter. It's also way more resilient to change in the future.</p>
+<p>This is the kind of thing that people get their soapbox out for!</p>
+</li>
+<li>DI containers call factories for you, and return a ready-built object for you to use. We want a DI container that returns the factory for us to call from our own code.</li>
+</ul>
+<p>Ignoring the lynch-mobs for now, passing in an array of exception factories turned out to be an incomplete solution.</p>
+<ul>
+<li>What happens if the exception alias isn't in the list? PHP will return a <code>null</code> (and older versions generate a legacy <code>E_NOTICE</code> first). <code>null</code> isn't a valid <code>callable</code>. Older versions of PHP will generate a fatal error (which crashes your code!). From PHP 7.0 onwards, this generates a <code>Throwable</code> exception. It's going to be a few years before we can write code that only runs on PHP 7.x, and legacy fatal errors are just downright nasty news for any production system.</li>
+<li>Similiary, what happens if the exception alias is in the list, but it hasn't been assigned a valid PHP <code>callable</code>?</li>
+</ul>
+<p>One of our guiding principles is to make it as easy as possible to detect programming errors before the code is shipped to production.  A PHP array is lightning-quick, but there's no way to attach these kinds of robustness checks to one.  We have to create some kind of container to do so.</p>
+<p>We looked around at the existing DI containers, but couldn't find one that met our needs.</p>
+<ul>
+<li>We don't want a service locator (for this specific problem).</li>
+<li>We don't want the DI container to call the factory for us.</li>
+<li>We don't want autowiring at all.</li>
+<li>We want to enforce the required properties of our list.</li>
+<li>We want to be able to perform additional robustness checks (e.g. making sure <code>Library1</code> has provided exceptions for everything <code>Library2</code> defines) in unit tests.</li>
+</ul>
+<p>We decided that it made sense to build our own.</p>
+            </article>
+
+                        <nav class="pageflow">
+              <ul>
+                                    <li><a href="index.html">Prev: Introduction</a></li>
+                                                      <li><a href="license.html">Next: License</a></li>
+                                </ul>
+            </nav>
+                    </main>
+
+        <aside class="sidebar">
+            <h2>This Page</h2>
+            <nav class="toc" data-type="ishi-toc" data-max-depth="3">
+            </nav>
+        </aside>
+        <footer>
+            <div class="strapline">
+                <p>Copyright &copy; 2015 <a href="http://ganbarodigital.com">Ganbaro Digital Ltd</a>. Released under the <a href="http://ganbarodigital.github.io/php-mv-di-containers/license.html">New BSD</a> license.
+                                            Find Dependency-Injection Containers Library for PHP on <a href="https://github.com/ganbarodigital/php-mv-di-containers">GitHub</a>.
+                                        Built with <a href="http://couscous.io/">Couscous</a>.
+                </p>
+            </div>
+        </footer>
+    <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/laroux.js"></script>
+    <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/ishi.js"></script>
+    </body>
+</html>

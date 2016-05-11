@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--[if lt IE 9]>
+            <script src="assets/html5shiv.js"></script>
+            <script src="assets/html5printshiv.js"></script>
+        <![endif]-->
+        <meta charset="utf-8"/>
+        <title>Dependency-Injection Containers Library for PHP from Ganbaro Digital</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://ganbarodigital.github.io/php-mv-di-containers/assets/docs.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="http://ganbarodigital.github.io/php-mv-di-containers/assets/prism.css">
+        <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/prism.js"></script>
+    </head>
+    <body data-ishi-anchors="1">
+        <header role="banner">
+            <div>
+                <p style="font-size: 34px; padding-top: 10px">Dependency-Injection Containers Library for PHP</p>
+                <p style="font-size: 18px; border-bottom: 1px solid; padding-bottom: 10px">Easy-to-use dependency injection for your apps and libraries</p>
+            </div>
+            <!--<a href="http://ganbarodigital.github.io/php-mv-di-containers/index.html">
+                <img src="http://ganbarodigital.github.io/php-mv-di-containers/assets/ganbarodigital.svg" width="60" height="60" style="vertical-align: middle; float: left; margin-right: 15px">
+            </a>-->
+            <nav class="navbar topbar">
+                <ul>
+                                            <li class="">
+                            <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/index.html">Overview</a>
+                        </li>
+                                            <li class="current">
+                            <a class="current" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/index.html">Version 1.x</a>
+                        </li>
+                                    </ul>
+            </nav>
+        </header>
+                                                                            <header role="subnav">
+                        <nav class="navbar">
+                            <ul>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/index.html">Introduction</a>
+                                    </li>
+                                                                    <li class="current">
+                                        <a class="current" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/Exceptions/index.html">Exceptions</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/Interfaces/index.html">Interfaces</a>
+                                    </li>
+                                                                    <li class="">
+                                        <a class="" href="http://ganbarodigital.github.io/php-mv-di-containers/V1/FactoryList/index.html">FactoryList</a>
+                                    </li>
+                                                            </ul>
+                        </nav>
+                    </header>
+                                            <main role="main">
+                        <nav class="pageflow">
+              <ul>
+                                    <li><a href="NotAListOfFactories.html">Prev: NotAListOfFactories class</a></li>
+                                                      <li></li>
+                                </ul>
+            </nav>
+            
+            <article>
+                <h1 id="dicontainersexceptions">DIContainersExceptions</h1>
+<div class="callout info">
+<p>Since v1.2016050901</p>
+</div>
+<h2 id="description">Description</h2>
+<p><code>DIContainersExceptions</code> is an <a href="../Interfaces/FactoryList.html"><code>FactoryList</code></a>. It provides a list of all exceptions that the <em>Dependency-Injection Containers Library</em> can build, along with a factory method for each exception.</p>
+<h2 id="public-interface">Public Interface</h2>
+<p><code>DIContainersExceptions</code> has the following public interface:</p>
+<pre><code class="language-php">// DIContainersExceptions lives in this namespace
+namespace GanbaroDigital\DIContainers\V1\Exceptions;
+
+// our base classes and interfaces
+use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
+
+class DIContainersExceptions extends FactoryListContainer
+{
+    public function __construct();
+
+    /**
+     * return the full list of factories as a real PHP array
+     *
+     * @return array
+     * @inheritedFrom FactoryList
+     */
+    public function getList();
+}</code></pre>
+<h2 id="how-to-use">How To Use</h2>
+<h3 id="construction">Construction</h3>
+<p>Here's how to build a new instance of <code>DIContainersExceptions</code>:</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersExceptions;
+
+$exceptions = new DIContainersExceptions;</code></pre>
+<h3 id="overriding-the-exceptions">Overriding The Exceptions</h3>
+<p>The whole point of this class is that your library can override the exceptions thrown by this library.</p>
+<pre><code class="language-php">use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
+
+class MyLibraryExceptions extends FactoryListContainer
+{
+    public function __construct()
+    {
+        // my library's exceptions
+        $ourExceptions = [
+            'alias' =&gt; [ MyExceptionClass::class, 'newFromXXX' ],
+            // make sure this list overrides every exception included in
+            // DIContainersExceptions
+        ];
+
+        // inject our list into this entity
+        // if there are any problems, my library's exceptions will be
+        // used, not the ones in the DIContainers library
+        parent::__construct($ourExceptions, $this);
+    }
+}</code></pre>
+<h2 id="class-contract">Class Contract</h2>
+<p>Here is the contract for this class:</p>
+<pre><code>GanbaroDigital\DIContainers\V1\Exceptions\DIContainersExceptions
+ [x] Can instantiate
+ [x] Can get factory for no such factory
+ [x] Can get factory for not a factory
+ [x] Can get instance builder for not an instance builder list</code></pre>
+<p>Class contracts are built from this class's unit tests.</p>
+<div class="callout success">
+Future releases of this class will not break this contract.
+</div>
+<div class="callout info">
+<p>Future releases of this class may add to this contract. New additions may include:</p>
+<ul>
+<li>clarifying existing behaviour (e.g. stricter contract around input or return types)</li>
+<li>add new behaviours (e.g. extra class methods)</li>
+</ul>
+</div>
+<div class="callout warning">
+<p>When you use this class, you can only rely on the behaviours documented by this contract.</p>
+<p>If you:</p>
+<ul>
+<li>find other ways to use this class,</li>
+<li>or depend on behaviours that are not covered by a unit test,</li>
+<li>or depend on undocumented internal states of this class,</li>
+</ul>
+<p>... your code may not work in the future.</p>
+</div>
+<h2 id="notes">Notes</h2>
+<p>None at this time.</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="../Interfaces/FactoryList.html"><code>FactoryList</code></a> - interface for a dependency-injection container for factories</li>
+<li><a href="../FactoryList/FactoryListContainer.html"><code>FactoryListContainer</code></a> - dependency-injection container for factories</li>
+</ul>
+            </article>
+
+                        <nav class="pageflow">
+              <ul>
+                                    <li><a href="NotAListOfFactories.html">Prev: NotAListOfFactories class</a></li>
+                                                      <li></li>
+                                </ul>
+            </nav>
+                    </main>
+
+        <aside class="sidebar">
+            <h2>This Page</h2>
+            <nav class="toc" data-type="ishi-toc" data-max-depth="3">
+            </nav>
+        </aside>
+        <footer>
+            <div class="strapline">
+                <p>Copyright &copy; 2015 <a href="http://ganbarodigital.com">Ganbaro Digital Ltd</a>. Released under the <a href="http://ganbarodigital.github.io/php-mv-di-containers/license.html">New BSD</a> license.
+                                            Find Dependency-Injection Containers Library for PHP on <a href="https://github.com/ganbarodigital/php-mv-di-containers">GitHub</a>.
+                                        Built with <a href="http://couscous.io/">Couscous</a>.
+                </p>
+            </div>
+        </footer>
+    <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/laroux.js"></script>
+    <script src="http://ganbarodigital.github.io/php-mv-di-containers/assets/ishi.js"></script>
+    </body>
+</html>
