@@ -249,11 +249,11 @@ class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $factoryName = "TheTroutIsRevolting!";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): no factory called 'TheTroutIsRevolting!'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 12) . ": no factory called 'TheTroutIsRevolting!'";
         $expectedData = [
             'factoryName' => $factoryName,
-            'callerName' => 'ReflectionMethod->invokeArgs()',
-            'caller' => new CodeCaller('ReflectionMethod', 'invokeArgs', '->', null, null),
+            'callerName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 9),
+            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, (__LINE__ + 8)),
         ];
 
         // ----------------------------------------------------------------

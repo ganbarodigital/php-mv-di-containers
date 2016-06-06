@@ -185,7 +185,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
 
         $container = new DIContainersExceptions;
         $expectedType = "object<" . get_class($container) . ">";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): attempt to edit read-only container '{$expectedType}'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 5) . ": attempt to edit read-only container '{$expectedType}'";
 
         // ----------------------------------------------------------------
         // perform the change
@@ -211,7 +211,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
 
         $container = new DIContainersExceptions;
         $expectedType = "object<" . get_class($container) . ">";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): attempt to edit read-only container '{$expectedType}'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 5) . ": attempt to edit read-only container '{$expectedType}'";
 
         // ----------------------------------------------------------------
         // perform the change
@@ -237,7 +237,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
 
         $container = new DIContainersExceptions;
         $expectedType = "object<" . get_class($container) . ">";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): attempt to edit read-only container '{$expectedType}'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 5) . ": attempt to edit read-only container '{$expectedType}'";
 
         // ----------------------------------------------------------------
         // perform the change

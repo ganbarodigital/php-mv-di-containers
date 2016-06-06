@@ -49,7 +49,7 @@ class NotAFactory
      *         the non-callable that we were given
      * @param  int|null $typeFlags
      *         do we want any extra type information in the final exception message?
-     * @param  array|null $callerFilter
+     * @param  array $callerFilter
      *         are there any namespaces we want to filter out of the call stack?
      * @return NotAFactory
      *         an fully-built exception for you to throw
@@ -58,7 +58,7 @@ class NotAFactory
         $factoryName,
         $badFactory,
         $typeFlags = null,
-        $callerFilter = null
+        array $callerFilter = []
     );
 
     /**
