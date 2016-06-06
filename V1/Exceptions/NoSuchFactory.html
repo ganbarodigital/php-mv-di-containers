@@ -90,12 +90,15 @@ class NoSuchFactory
      *
      * @param  mixed $factoryName
      *         the name of the factory that we do not know about
-     * @param  array|null $callerFilter
+     * @param  array $callerFilter
      *         are there any namespaces we want to filter out of the call stack?
      * @return NoSuchFactory
      *         an fully-built exception for you to throw
      */
-    public static function newFromFactoryName($factoryName, $callerFilter = null);
+    public static function newFromFactoryName(
+        $factoryName,
+        array $callerFilter = []
+    );
 
     /**
      * what was the data that we used to create the printable message?
@@ -213,6 +216,16 @@ Future releases of this class will not break this contract.
 </div>
 <h2 id="notes">Notes</h2>
 <p>None at this time.</p>
+<h2 id="changelog">Changelog</h2>
+<h3 id="v12016060601">v1.2016060601</h3>
+<ul>
+<li>
+<p><code>$callerFilter</code> signature changed</p>
+<p>The <code>$callerFilter</code> parameter is now type-hinted as an array, and can no longer be <code>NULL</code>.</p>
+<p>If no <code>$callerFilter</code> parameter is provided, it now defaults to an empty list. It no longer defaults to <code>FilterCodeCaller::$DEFAULT_PARTIALS</code>; that list no longer exists.</p>
+<p>These changes were made to make this class compatible with the latest <a href="http://ganbarodigital.github.io/php-mv-exception-helpers/"><code>Exception Helpers Library</code></a>.</p>
+</li>
+</ul>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a href="../Interfaces/FactoryList.html"><code>FactoryList</code></a> - interface for a dependency-injection container for factories</li>
