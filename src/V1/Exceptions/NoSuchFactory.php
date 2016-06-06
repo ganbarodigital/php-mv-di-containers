@@ -64,18 +64,13 @@ class NoSuchFactory
      *
      * @param  mixed $factoryName
      *         the name of the factory that we do not know about
-     * @param  array|null $callerFilter
+     * @param  array $callerFilter
      *         are there any namespaces we want to filter out of the call stack?
      * @return NoSuchFactory
      *         an fully-built exception for you to throw
      */
-    public static function newFromFactoryName($factoryName, $callerFilter = null)
+    public static function newFromFactoryName($factoryName, array $callerFilter = [])
     {
-        // what filter are we applying?
-        if (!is_array($callerFilter)) {
-            $callerFilter = FilterCodeCaller::$DEFAULT_PARTIALS;
-        }
-
         // who called us?
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $caller = FilterCodeCaller::from($backtrace, $callerFilter);

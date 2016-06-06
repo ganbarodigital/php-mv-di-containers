@@ -184,7 +184,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
@@ -212,7 +212,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
@@ -240,7 +240,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
@@ -268,7 +268,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change

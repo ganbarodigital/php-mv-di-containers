@@ -49,7 +49,7 @@ class NotAFactory
      *         the non-callable that we were given
      * @param  int|null $typeFlags
      *         do we want any extra type information in the final exception message?
-     * @param  array|null $callerFilter
+     * @param  array $callerFilter
      *         are there any namespaces we want to filter out of the call stack?
      * @return NotAFactory
      *         an fully-built exception for you to throw
@@ -58,7 +58,7 @@ class NotAFactory
         $factoryName,
         $badFactory,
         $typeFlags = null,
-        $callerFilter = null
+        array $callerFilter = []
     );
 
     /**
@@ -211,6 +211,18 @@ If you:
 ## Notes
 
 None at this time.
+
+## Changelog
+
+### v1.2016060601
+
+* `$callerFilter` signature changed
+
+  The `$callerFilter` parameter is now type-hinted as an array, and can no longer be `NULL`.
+
+  If no `$callerFilter` parameter is provided, it now defaults to an empty list. It no longer defaults to `FilterCodeCaller::$DEFAULT_PARTIALS`; that list no longer exists.
+
+  These changes were made to make this class compatible with the latest [`Exception Helpers Library`](http://ganbarodigital.github.io/php-mv-exception-helpers/).
 
 ## See Also
 

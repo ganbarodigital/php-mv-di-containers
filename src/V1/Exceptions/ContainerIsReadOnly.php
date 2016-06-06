@@ -67,21 +67,16 @@ class ContainerIsReadOnly
      *         the container that is read-only
      * @param  int|null $typeFlags
      *         do we want any extra type information in the final exception message?
-     * @param  array|null $callerFilter
+     * @param  array $callerFilter
      *         are there any namespaces we want to filter out of the call stack?
      * @return ContainerIsReadOnly
      *         an fully-built exception for you to throw
      */
-    public static function newFromContainer($container, $typeFlags = null, $callerFilter = null)
+    public static function newFromContainer($container, $typeFlags = null, array $callerFilter = [])
     {
         // what flags are we applying?
         if (!is_int($typeFlags)) {
             $typeFlags = GetPrintableType::FLAG_DEFAULTS;
-        }
-
-        // what filter are we applying?
-        if (!is_array($callerFilter)) {
-            $callerFilter = FilterCodeCaller::$DEFAULT_PARTIALS;
         }
 
         // who called us?
