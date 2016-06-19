@@ -43,6 +43,7 @@
 
 namespace GanbaroDigital\DIContainers\V1\Exceptions;
 
+use GanbaroDigital\DIContainers\V1\Requirements\RequireWriteableContainer;
 use GanbaroDigital\ExceptionHelpers\V1\BaseExceptions\ParameterisedException;
 use GanbaroDigital\ExceptionHelpers\V1\Callers\Filters\FilterCodeCaller;
 use GanbaroDigital\HttpStatus\Interfaces\HttpRuntimeErrorException;
@@ -60,40 +61,6 @@ class ContainerIsReadOnly
     // adds 'getHttpStatus()' that returns a HTTP 500 status value object
     use UnexpectedErrorStatusProvider;
 
-    /**
-     * create a new exception
-     *
-     * @param  mixed $container
-     *         the container that is read-only
-     * @param  int|null $typeFlags
-     *         do we want any extra type information in the final exception message?
-     * @param  array $callerFilter
-     *         are there any namespaces we want to filter out of the call stack?
-     * @return ContainerIsReadOnly
-     *         an fully-built exception for you to throw
-     */
-    public static function newFromContainer($container, $typeFlags = null, array $callerFilter = [])
-    {
-        // what flags are we applying?
-        if (!is_int($typeFlags)) {
-            $typeFlags = GetPrintableType::FLAG_DEFAULTS;
-        }
-
-        // who called us?
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $caller = FilterCodeCaller::from($backtrace, $callerFilter);
-
-        // what type of container do we have?
-        $type = GetPrintableType::of($container, $typeFlags);
-
-        // all done
-        return new static(
-            "%callerName\$s: attempt to edit read-only container '%containerType\$s'",
-            [
-                'containerType' => $type,
-                'callerName' => $caller->getCaller(),
-                'caller' => $caller,
-            ]
-        );
-    }
+    // our format string
+    static protected $defaultFormat = "attempt to edit read-only container '%dataType\$s'";
 }

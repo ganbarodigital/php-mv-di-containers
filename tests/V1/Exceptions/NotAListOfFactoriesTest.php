@@ -80,7 +80,7 @@ class NotAListOfFactoriesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsDIContainersException()
+    public function test_is_DIContainersException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -99,7 +99,7 @@ class NotAListOfFactoriesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsParameterisedException()
+    public function test_is_ParameterisedException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -118,7 +118,7 @@ class NotAListOfFactoriesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsRuntimeException()
+    public function test_is_RuntimeException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -137,7 +137,7 @@ class NotAListOfFactoriesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsHttpRuntimeErrorException()
+    public function test_is_HttpRuntimeErrorException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -156,7 +156,7 @@ class NotAListOfFactoriesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testMapsToUnexpectedErrorStatus()
+    public function test_maps_to_UnexpectedErrorStatus()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -184,59 +184,7 @@ class NotAListOfFactoriesTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $unit = NotAListOfFactories::newFromVar($nonArray, '$nonArray');
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    /**
-     * @covers ::newFromVar
-     * @dataProvider provideNonArrayToTest
-     */
-    public function testExceptionMessageContainsCaller($nonArray, $expectedType)
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $unit = NotAListOfFactories::newFromVar($nonArray, '$nonArray');
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    /**
-     * @covers ::newFromVar
-     * @dataProvider provideNonArrayToTest
-     */
-    public function testExceptionMessageContainsTypeOfNonList($nonArray, $expectedType)
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedAlias = "FakeException";
-        $expectedMessage = "ReflectionMethod->invokeArgs(): '\$nonArray' cannot be type '{$expectedType}'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . "()@192: '\$nonArray' cannot be type '{$expectedType}'";
 
         // ----------------------------------------------------------------
         // perform the change

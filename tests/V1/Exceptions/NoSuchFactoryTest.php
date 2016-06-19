@@ -80,7 +80,7 @@ class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsDIContainersException()
+    public function test_is_DIContainersException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -99,7 +99,7 @@ class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsParameterisedException()
+    public function test_is_ParameterisedException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -118,7 +118,7 @@ class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsRuntimeException()
+    public function test_is_RuntimeException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -137,7 +137,7 @@ class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsHttpRuntimeErrorException()
+    public function test_is_HttpRuntimeErrorException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -156,7 +156,7 @@ class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testMapsToUnexpectedErrorStatus()
+    public function test_maps_to_UnexpectedErrorStatus()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -175,93 +175,27 @@ class NoSuchFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::newFromFactoryName
+     * @covers ::newFromVar
      */
-    public function testCanBuildFromFactoryName()
+    public function test_can_build_from_PHP_variable()
     {
         // ----------------------------------------------------------------
         // setup your test
 
         $factoryName = "TheTroutIsRevolting!";
-        $expectedMessage = "GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanBuildFromFactoryName()@198: no factory called 'TheTroutIsRevolting!'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . "()@198: no factory called 'TheTroutIsRevolting!'";
         $expectedData = [
-            'factoryName' => $factoryName,
-            'callerName' => 'GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanBuildFromFactoryName()@198',
-            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, 198),
+            'fieldOrVar' => $factoryName,
+            'fieldOrVarName' => '$factoryName',
+            'dataType' => "string<TheTroutIsRevolting!>",
+            'thrownByName' => __CLASS__ . '->' . __FUNCTION__ . "()@198",
+            'thrownBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, 198),
         ];
 
         // ----------------------------------------------------------------
         // perform the change
 
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NoSuchFactory::newFromFactoryName($factoryName, []);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-        $this->assertEquals($expectedData, $actualData);
-    }
-
-    /**
-     * @covers ::newFromFactoryName
-     */
-    public function testCanPassCallerFilterIntoNewFromFactoryName()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $factoryName = "TheTroutIsRevolting!";
-        $expectedMessage = "GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanPassCallerFilterIntoNewFromFactoryName()@231: no factory called 'TheTroutIsRevolting!'";
-        $expectedData = [
-            'factoryName' => $factoryName,
-            'callerName' => 'GanbaroDigitalTest\DIContainers\V1\Exceptions\NoSuchFactoryTest->testCanPassCallerFilterIntoNewFromFactoryName()@231',
-            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, 231),
-        ];
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NoSuchFactory::newFromFactoryName($factoryName, []);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-        $this->assertEquals($expectedData, $actualData);
-    }
-
-    /**
-     * @covers ::newFromFactoryName
-     */
-    public function testNewFromFactoryNameWillUseDefaultCallerFilterIfNoFilterProvided()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $factoryName = "TheTroutIsRevolting!";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 12) . ": no factory called 'TheTroutIsRevolting!'";
-        $expectedData = [
-            'factoryName' => $factoryName,
-            'callerName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 9),
-            'caller' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, (__LINE__ + 8)),
-        ];
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NoSuchFactory::newFromFactoryName($factoryName);
+        $unit = NoSuchFactory::newFromVar($factoryName, '$factoryName');
 
         // ----------------------------------------------------------------
         // test the results

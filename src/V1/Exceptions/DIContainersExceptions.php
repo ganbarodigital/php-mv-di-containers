@@ -55,9 +55,13 @@ class DIContainersExceptions extends FactoryListContainer
         // all of the exceptions that our library can create, and the means
         // to create them
         $ourExceptions = [
-            'ContainerIsReadOnly::newFromContainer' => [ ContainerIsReadOnly::class, 'newFromContainer' ],
-            'NoSuchFactory::newFromFactoryName' => [ NoSuchFactory::class, 'newFromFactoryName' ],
-            'NotAFactory::newFromNonCallable' => [ NotAFactory::class, 'newFromNonCallable' ],
+            'ContainerIsReadOnly::newFromInputParameter' => [ ContainerIsReadOnly::class, 'newFromInputParameter' ],
+            'ContainerIsReadOnly::newFromVar' => [ ContainerIsReadOnly::class, 'newFromVar' ],
+            'NoSuchFactory::newFromInputParameter' => [ NoSuchFactory::class, 'newFromInputParameter' ],
+            'NoSuchFactory::newFromVar' => [ NoSuchFactory::class, 'newFromVar' ],
+            'NotAFactory::newFromInputParameter' => [ NotAFactory::class, 'newFromInputParameter' ],
+            'NotAFactory::newFromVar' => [ NotAFactory::class, 'newFromVar' ],
+            'NotAListOfFactories::newFromInputParameter' => [ NotAListOfFactories:: class, 'newFromInputParameter' ],
             'NotAListOfFactories::newFromVar' => [ NotAListOfFactories:: class, 'newFromVar' ],
         ];
 

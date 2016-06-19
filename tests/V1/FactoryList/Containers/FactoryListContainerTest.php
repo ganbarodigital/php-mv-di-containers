@@ -43,11 +43,17 @@
 
 namespace GanbaroDigitalTest\DIContainers\V1\FactoryList\Containers;
 
+use GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory;
+use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
+use GanbaroDigital\DIContainers\V1\Exceptions\ContainerIsReadOnly;
+use GanbaroDigital\DIContainers\V1\Exceptions\NotAListOfFactories;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersExceptions;
 use GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer;
 use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
 use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
+use GanbaroDigital\ExceptionHelpers\V1\Callers\Values\CodeCaller;
+use GanbaroDigital\MissingBits\TypeInspectors\GetPrintableType;
 
 /**
  * @coversDefaultClass GanbaroDigital\DIContainers\V1\FactoryList\Containers\FactoryListContainer
@@ -103,26 +109,50 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @dataProvider provideNonArraysToTest
-     * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\NotAListOfFactories
      */
     public function testMustProvideArrayToConstructor($factories)
     {
         // ----------------------------------------------------------------
         // setup your test
 
+        $expectedType = GetPrintableType::of($factories);
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 15) . ": " . FactoryListContainer::class . "->__construct()@124 says '\$factories' cannot be type '$expectedType'";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(FactoryListContainer::class, '__construct', '->', FactoryListContainer::file, 124),
+            'thrownByName' => FactoryListContainer::class . '->__construct()@124',
+            'calledBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 11),
+            'calledByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 10),
+            'fieldOrVarName' => '$factories',
+            'fieldOrVar' => $factories,
+            'dataType' => $expectedType
+        ];
+
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new FactoryListContainer($factories);
+        try {
+            $unit = new FactoryListContainer($factories);
+        }
+        catch (NotAListOfFactories $e) {
+            // fall through
+        }
 
         // ----------------------------------------------------------------
         // test the results
+
+        // make sure we have an exception
+        $this->assertInstanceOf(NotAListOfFactories::class, $e);
+
+        $actualMessage = $e->getMessage();
+        $actualData = $e->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
      * @covers ::__construct
      * @dataProvider provideNonCallablesToTest
-     * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory
      */
     public function testMustProvideListOfCallablesToConstructor($builder)
     {
@@ -133,13 +163,39 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
             'dummy' => $builder
         ];
 
+        $expectedType = GetPrintableType::of($builder);
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 15) . ": " . FactoryListContainer::class . "->__construct()@128 says factory '\$factories[\"dummy\"]' must be a PHP callable; $expectedType given";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(FactoryListContainer::class, '__construct', '->', FactoryListContainer::file, 128),
+            'thrownByName' => FactoryListContainer::class . '->__construct()@128',
+            'calledBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 11),
+            'calledByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 10),
+            'fieldOrVarName' => '$factories["dummy"]',
+            'fieldOrVar' => $builder,
+            'dataType' => $expectedType
+        ];
+
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = new FactoryListContainer($factories);
+        try {
+            $unit = new FactoryListContainer($factories);
+        }
+        catch (NotAFactory $e) {
+            // fall through
+        }
 
         // ----------------------------------------------------------------
         // test the results
+
+        // make sure we have an exception
+        $this->assertInstanceOf(NotAFactory::class, $e);
+
+        $actualMessage = $e->getMessage();
+        $actualData = $e->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
@@ -169,7 +225,6 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::offsetGet
-     * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory
      */
     public function testThrowsExceptionIfFactoryNotFound()
     {
@@ -181,13 +236,38 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
         ];
         $unit = new FactoryListContainer($factories);
 
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 15) . ": " . FactoryListContainer::class . "->offsetGet()@157 says no factory called 'trout'";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(FactoryListContainer::class, 'offsetGet', '->', FactoryListContainer::file, 157),
+            'thrownByName' => FactoryListContainer::class . '->offsetGet()@157',
+            'calledBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 11),
+            'calledByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 10),
+            'fieldOrVarName' => '$factoryName',
+            'fieldOrVar' => "trout",
+            'dataType' => "string<trout>",
+        ];
+
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualBuilder = $unit['trout'];
+        try {
+            $factory = $unit["trout"];
+        }
+        catch (NoSuchFactory $e) {
+            // fall through
+        }
 
         // ----------------------------------------------------------------
         // test the results
+
+        // make sure we have an exception
+        $this->assertInstanceOf(NoSuchFactory::class, $e);
+
+        $actualMessage = $e->getMessage();
+        $actualData = $e->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
@@ -211,7 +291,7 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
         // we can override this for our test
         $exceptions = new DIContainersExceptions;
         $exceptions->setReadWrite();
-        $exceptions['NoSuchFactory::newFromFactoryName'] = new FactoryListContainerTest_Builder;
+        $exceptions['NoSuchFactory::newFromInputParameter'] = new FactoryListContainerTest_Builder;
 
         $unit = new FactoryListContainer($factories, $exceptions);
 
@@ -281,7 +361,6 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
      * @covers ::setReadWrite
      * @covers ::requireReadWrite
      * @dataProvider provideNonCallablesToTest
-     * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory
      */
     public function testMustProvideCallableWhenRegisteringAdditionalFactories($builder)
     {
@@ -294,14 +373,40 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
         $unit = new FactoryListContainer($factories);
         $this->assertFalse(isset($unit['trout']));
 
+        $expectedType = GetPrintableType::of($builder);
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 16) . ": " . FactoryListContainer::class . "->offsetSet()@193 says factory 'trout' must be a PHP callable; $expectedType given";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(FactoryListContainer::class, 'offsetSet', '->', FactoryListContainer::file, 193),
+            'thrownByName' => FactoryListContainer::class . '->offsetSet()@193',
+            'calledBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 12),
+            'calledByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 11),
+            'fieldOrVarName' => 'trout',
+            'fieldOrVar' => $builder,
+            'dataType' => $expectedType
+        ];
+
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit->setReadWrite();
-        $unit['trout'] = $builder;
+        try {
+            $unit->setReadWrite();
+            $unit['trout'] = $builder;
+        }
+        catch (NotAFactory $e) {
+            // fall through
+        }
 
         // ----------------------------------------------------------------
         // test the results
+
+        // make sure we have an exception
+        $this->assertInstanceOf(NotAFactory::class, $e);
+
+        $actualMessage = $e->getMessage();
+        $actualData = $e->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
@@ -416,7 +521,6 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::offsetSet
      * @covers ::requireReadWrite
-     * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\ContainerIsReadOnly
      */
     public function testCannotAddFactoryWhenReadOnly()
     {
@@ -428,19 +532,44 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
         ];
         $unit = new FactoryListContainer($factories);
 
+        $expectedType = GetPrintableType::of($unit);
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 15) . ": " . FactoryListContainer::class . "->offsetSet()@189 says attempt to edit read-only container '$expectedType'";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(FactoryListContainer::class, 'offsetSet', '->', FactoryListContainer::file, 189),
+            'thrownByName' => FactoryListContainer::class . '->offsetSet()@189',
+            'calledBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 11),
+            'calledByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 10),
+            'fieldOrVarName' => '$this',
+            'fieldOrVar' => $unit,
+            'dataType' => $expectedType,
+        ];
+
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit['trout'] = new FactoryListContainerTest_Builder;
+        try {
+            $unit['trout'] = new FactoryListContainerTest_Builder;
+        }
+        catch (ContainerIsReadOnly $e) {
+            // fall through
+        }
 
         // ----------------------------------------------------------------
         // test the results
+
+        // make sure we have an exception
+        $this->assertInstanceOf(ContainerIsReadOnly::class, $e);
+
+        $actualMessage = $e->getMessage();
+        $actualData = $e->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
      * @covers ::offsetUnset
      * @covers ::requireReadWrite
-     * @expectedException GanbaroDigital\DIContainers\V1\Exceptions\ContainerIsReadOnly
      */
     public function testCannotForgetFactoryWhenReadOnly()
     {
@@ -452,13 +581,39 @@ class FactoryListContainerTest extends PHPUnit_Framework_TestCase
         ];
         $unit = new FactoryListContainer($factories);
 
+        $expectedType = GetPrintableType::of($unit);
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 15) . ": " . FactoryListContainer::class . "->offsetUnset()@209 says attempt to edit read-only container '$expectedType'";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(FactoryListContainer::class, 'offsetUnset', '->', FactoryListContainer::file, 209),
+            'thrownByName' => FactoryListContainer::class . '->offsetUnset()@209',
+            'calledBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 11),
+            'calledByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 10),
+            'fieldOrVarName' => '$this',
+            'fieldOrVar' => $unit,
+            'dataType' => $expectedType,
+        ];
+
         // ----------------------------------------------------------------
         // perform the change
 
-        unset($unit['dummy']);
+        try {
+            unset($unit['trout']);
+        }
+        catch (ContainerIsReadOnly $e) {
+            // fall through
+        }
 
         // ----------------------------------------------------------------
         // test the results
+
+        // make sure we have an exception
+        $this->assertInstanceOf(ContainerIsReadOnly::class, $e);
+
+        $actualMessage = $e->getMessage();
+        $actualData = $e->getMessageData();
+
+        $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 
     /**

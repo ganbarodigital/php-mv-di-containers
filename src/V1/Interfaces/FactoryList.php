@@ -44,11 +44,13 @@
 namespace GanbaroDigital\DIContainers\V1\Interfaces;
 
 use ArrayAccess;
+use GanbaroDigital\MissingBits\Entities\WriteProtectedEntity;
 
 /**
  * the interface that all factory list containers must implement
  */
-interface FactoryList extends ArrayAccess
+interface FactoryList
+  extends ArrayAccess, WriteProtectedEntity
 {
     /**
      * return the full list of factories as a real PHP array

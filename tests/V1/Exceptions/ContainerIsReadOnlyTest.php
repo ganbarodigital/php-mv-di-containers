@@ -81,7 +81,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsDIContainersException()
+    public function test_is_DIContainersException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -100,7 +100,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsParameterisedException()
+    public function test_is_ParameterisedException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -119,7 +119,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsRuntimeException()
+    public function test_is_RuntimeException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -138,7 +138,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsHttpRuntimeErrorException()
+    public function test_is_HttpRuntimeErrorException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -157,7 +157,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testMapsToUnexpectedErrorStatus()
+    public function test_maps_to_UnexpectedErrorStatus()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -176,7 +176,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::newFromContainer
+     * @covers ::newFromVar
      */
     public function testCanBuildFromContainer()
     {
@@ -185,12 +185,19 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
 
         $container = new DIContainersExceptions;
         $expectedType = "object<" . get_class($container) . ">";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 5) . ": attempt to edit read-only container '{$expectedType}'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 12) . ": attempt to edit read-only container '{$expectedType}'";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 10),
+            'thrownByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 9),
+            'fieldOrVarName' => '$container',
+            'fieldOrVar' => $container,
+            'dataType' => $expectedType
+        ];
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = ContainerIsReadOnly::newFromContainer($container);
+        $unit = ContainerIsReadOnly::newFromVar($container, '$container');
 
         // ----------------------------------------------------------------
         // test the results
@@ -199,24 +206,32 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
         $actualData = $unit->getMessageData();
 
         $this->assertEquals($expectedMessage, $actualMessage);
+        $this->assertEquals($expectedData, $actualData);
     }
 
     /**
-     * @covers ::newFromContainer
+     * @covers ::newFromVar
      */
-    public function testExceptionMessageContainsCaller()
+    public function testExceptionMessageContainsThrower()
     {
         // ----------------------------------------------------------------
         // setup your test
 
         $container = new DIContainersExceptions;
         $expectedType = "object<" . get_class($container) . ">";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 5) . ": attempt to edit read-only container '{$expectedType}'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 12) . ": attempt to edit read-only container '{$expectedType}'";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 10),
+            'thrownByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 9),
+            'fieldOrVarName' => '$container',
+            'fieldOrVar' => $container,
+            'dataType' => $expectedType
+        ];
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = ContainerIsReadOnly::newFromContainer($container);
+        $unit = ContainerIsReadOnly::newFromVar($container, '$container');
 
         // ----------------------------------------------------------------
         // test the results
@@ -228,7 +243,7 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::newFromContainer
+     * @covers ::newFromVar
      */
     public function testExceptionMessageContainsTypeOfContainer()
     {
@@ -237,12 +252,19 @@ class ContainerIsReadOnlyTest extends PHPUnit_Framework_TestCase
 
         $container = new DIContainersExceptions;
         $expectedType = "object<" . get_class($container) . ">";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 5) . ": attempt to edit read-only container '{$expectedType}'";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 12) . ": attempt to edit read-only container '{$expectedType}'";
+        $expectedData = [
+            'thrownBy' => new CodeCaller(__CLASS__, __FUNCTION__, '->', __FILE__, __LINE__ + 10),
+            'thrownByName' => __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 9),
+            'fieldOrVarName' => '$container',
+            'fieldOrVar' => $container,
+            'dataType' => $expectedType
+        ];
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $unit = ContainerIsReadOnly::newFromContainer($container);
+        $unit = ContainerIsReadOnly::newFromVar($container, '$container');
 
         // ----------------------------------------------------------------
         // test the results

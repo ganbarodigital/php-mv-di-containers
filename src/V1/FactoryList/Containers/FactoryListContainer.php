@@ -50,7 +50,7 @@ use GanbaroDigital\DIContainers\V1\Exceptions\NotAListOfFactories;
 use GanbaroDigital\DIContainers\V1\Exceptions\NotAFactoryList;
 use GanbaroDigital\DIContainers\V1\Interfaces\EntityContainer;
 use GanbaroDigital\DIContainers\V1\Interfaces\FactoryList;
-use GanbaroDigital\MissingBits\Entities\WriteProtectedEntity;
+use GanbaroDigital\DIContainers\V1\Requirements\RequireWriteableContainer;
 use GanbaroDigital\MissingBits\Entities\WriteProtectTab;
 
 /**
@@ -58,10 +58,13 @@ use GanbaroDigital\MissingBits\Entities\WriteProtectTab;
  * accessed as an array.
  */
 class FactoryListContainer
-  implements FactoryList, WriteProtectedEntity
+  implements FactoryList
 {
     // satisfies WriteProtectedEntity interface
     use WriteProtectTab;
+
+    // the file that we are declared in
+    const file = __FILE__;
 
     /**
      * the list of factories
@@ -118,11 +121,11 @@ class FactoryListContainer
 
         // robustness!
         if (!is_array($factories)) {
-            throw $exceptions['NotAListOfFactories::newFromVar']($factories, '\$factories');
+            throw $exceptions['NotAListOfFactories::newFromInputParameter']($factories, '$factories');
         }
         foreach ($factories as $name => $factory) {
             if (!is_callable($factory)) {
-                throw $exceptions['NotAFactory::newFromNonCallable']($name, $factory);
+                throw $exceptions['NotAFactory::newFromInputParameter']($factory, '$factories["' . $name . '"]');
             }
         }
 
@@ -151,7 +154,7 @@ class FactoryListContainer
         }
 
         // if we get here, then we do not have a factory by that name
-        throw $this->exceptions['NoSuchFactory::newFromFactoryName']($factoryName);
+        throw $this->exceptions['NoSuchFactory::newFromInputParameter']($factoryName, '$factoryName');
     }
 
     /**
@@ -183,11 +186,11 @@ class FactoryListContainer
     public function offsetSet($factoryName, $factory)
     {
         // are we allowed to edit this container?
-        $this->requireReadWrite();
+        RequireWriteableContainer::apply(null, [RequireWriteableContainer::class])->to($this, '$this');
 
         // do we have an acceptable factory?
         if (!is_callable($factory)) {
-            throw $this->exceptions['NotAFactory::newFromNonCallable']($factoryName, $factory);
+            throw $this->exceptions['NotAFactory::newFromInputParameter']($factory, $factoryName);
         }
 
         // if we get here, all is good
@@ -203,7 +206,7 @@ class FactoryListContainer
     public function offsetUnset($factoryName)
     {
         // are we allowed to edit this container?
-        $this->requireReadWrite();
+        RequireWriteableContainer::apply(null, [RequireWriteableContainer::class])->to($this, '$this');
 
         // it's PHP convention that attempting to unset() something that is
         // already unset() is not considered an error
@@ -223,19 +226,5 @@ class FactoryListContainer
     public function getList()
     {
         return $this->factories;
-    }
-
-    /**
-     * are we allowed to edit this container?
-     *
-     * @return void
-     * @throws ContainerIsReadOnly
-     */
-    protected function requireReadWrite()
-    {
-        // are we allowed to edit this container?
-        if ($this->isReadOnly()) {
-            throw $this->exceptions['ContainerIsReadOnly::newFromContainer']($this);
-        }
     }
 }
