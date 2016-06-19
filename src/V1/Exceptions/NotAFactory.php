@@ -60,44 +60,6 @@ class NotAFactory
     // adds 'getHttpStatus()' that returns a HTTP 500 status value object
     use UnexpectedErrorStatusProvider;
 
-    /**
-     * create a new exception
-     *
-     * @param  string $factoryName
-     *         the name that the bad factory was given
-     * @param  mixed $badFactory
-     *         the non-callable that we were given
-     * @param  int|null $typeFlags
-     *         do we want any extra type information in the final exception message?
-     * @param  array $callerFilter
-     *         are there any namespaces we want to filter out of the call stack?
-     * @return NotAFactory
-     *         an fully-built exception for you to throw
-     */
-    public static function newFromNonCallable($factoryName, $badFactory, $typeFlags = null, array $callerFilter = [])
-    {
-        // what flags are we applying?
-        if (!is_int($typeFlags)) {
-            $typeFlags = GetPrintableType::FLAG_DEFAULTS;
-        }
-
-        // who called us?
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $caller = FilterCodeCaller::from($backtrace, $callerFilter);
-
-        // what type was rejected?
-        $type = GetPrintableType::of($badFactory, $typeFlags);
-
-        // all done
-        return new static(
-            "%callerName\$s: '\$factory' for '%factoryName\$s' must be callable; %badFactoryType\$s given",
-            [
-                'factoryName' => $factoryName,
-                'badFactory' => $badFactory,
-                'badFactoryType' => $type,
-                'callerName' => $caller->getCaller(),
-                'caller' => $caller,
-            ]
-        );
-    }
+    // our format string
+    static protected $defaultFormat = "factory '%fieldOrVarName\$s' must be a PHP callable; %dataType\$s given";
 }

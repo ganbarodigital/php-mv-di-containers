@@ -45,6 +45,7 @@ namespace GanbaroDigitalTest\DIContainers\V1\Exceptions;
 
 use RuntimeException;
 use PHPUnit_Framework_TestCase;
+use GanbaroDigital\DIContainers\V1\Exceptions\ContainerIsReadOnly;
 use GanbaroDigital\DIContainers\V1\Exceptions\DIContainersExceptions;
 use GanbaroDigital\DIContainers\V1\Exceptions\NoSuchFactory;
 use GanbaroDigital\DIContainers\V1\Exceptions\NotAFactory;
@@ -76,9 +77,9 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @coversNothing
+     * @covers ::offsetGet
      */
-    public function testCanGetFactoryForNoSuchFactory()
+    public function test_has_factory_for_ContainerIsReadOnly_newFromInputParameter()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -88,8 +89,58 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $builder = $unit['NoSuchFactory::newFromFactoryName'];
-        $exception = $builder('trout');
+        $factory = $unit['ContainerIsReadOnly::newFromInputParameter'];
+        $exception = $factory('trout', 'fish');
+
+        // ----------------------------------------------------------------
+        // test the results
+        //
+        // we prove that we got the correct builder by checking the type
+        // of the exception that it built
+
+        $this->assertInstanceOf(ContainerIsReadOnly::class, $exception);
+    }
+
+    /**
+     * @covers ::offsetGet
+     */
+    public function test_has_factory_for_ContainerIsReadOnly_newFromVar()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $unit = new DIContainersExceptions();
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $factory = $unit['ContainerIsReadOnly::newFromVar'];
+        $exception = $factory('trout', 'fish');
+
+        // ----------------------------------------------------------------
+        // test the results
+        //
+        // we prove that we got the correct builder by checking the type
+        // of the exception that it built
+
+        $this->assertInstanceOf(ContainerIsReadOnly::class, $exception);
+    }
+
+    /**
+     * @covers ::offsetGet
+     */
+    public function test_has_factory_for_NoSuchFactory_newFromInputParameter()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $unit = new DIContainersExceptions();
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $factory = $unit['NoSuchFactory::newFromInputParameter'];
+        $exception = $factory('trout', 'fish');
 
         // ----------------------------------------------------------------
         // test the results
@@ -101,9 +152,9 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @coversNothing
+     * @covers ::offsetGet
      */
-    public function testCanGetFactoryForNotAFactory()
+    public function test_has_factory_for_NoSuchFactory_newFromVar()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -113,8 +164,33 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $builder = $unit['NotAFactory::newFromNonCallable'];
-        $exception = $builder('trout', false);
+        $factory = $unit['NoSuchFactory::newFromVar'];
+        $exception = $factory('trout', 'fish');
+
+        // ----------------------------------------------------------------
+        // test the results
+        //
+        // we prove that we got the correct builder by checking the type
+        // of the exception that it built
+
+        $this->assertInstanceOf(NoSuchFactory::class, $exception);
+    }
+
+    /**
+     * @covers ::offsetGet
+     */
+    public function test_has_factory_for_NotAFactory_newFromInputParameter()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $unit = new DIContainersExceptions();
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $factory = $unit['NotAFactory::newFromInputParameter'];
+        $exception = $factory('trout', 'fish');
 
         // ----------------------------------------------------------------
         // test the results
@@ -126,9 +202,9 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @coversNothing
+     * @covers ::offsetGet
      */
-    public function testCanGetInstanceBuilderForNotAnInstanceBuilderList()
+    public function test_has_factory_for_NotAFactory_newFromVar()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -138,8 +214,58 @@ class DIContainersExceptionsTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $builder = $unit['NotAListOfFactories::newFromVar'];
-        $exception = $builder('trout', '$list');
+        $factory = $unit['NotAFactory::newFromVar'];
+        $exception = $factory('trout', 'fish');
+
+        // ----------------------------------------------------------------
+        // test the results
+        //
+        // we prove that we got the correct builder by checking the type
+        // of the exception that it built
+
+        $this->assertInstanceOf(NotAFactory::class, $exception);
+    }
+
+    /**
+     * @covers ::offsetGet
+     */
+    public function test_has_factory_for_NotAListOfFactories_newFromInputParameter()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $unit = new DIContainersExceptions();
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $factory = $unit['NotAListOfFactories::newFromInputParameter'];
+        $exception = $factory('trout', 'fish');
+
+        // ----------------------------------------------------------------
+        // test the results
+        //
+        // we prove that we got the correct builder by checking the type
+        // of the exception that it built
+
+        $this->assertInstanceOf(NotAListOfFactories::class, $exception);
+    }
+
+    /**
+     * @covers ::offsetGet
+     */
+    public function test_has_factory_for_NotAListOfFactories_newFromVar()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $unit = new DIContainersExceptions();
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $factory = $unit['NotAListOfFactories::newFromVar'];
+        $exception = $factory('trout', 'fish');
 
         // ----------------------------------------------------------------
         // test the results

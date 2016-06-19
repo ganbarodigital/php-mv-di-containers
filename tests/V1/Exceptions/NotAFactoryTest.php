@@ -80,7 +80,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsDIContainersException()
+    public function test_is_DIContainersException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -99,7 +99,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsParameterisedException()
+    public function test_is_ParameterisedException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -118,7 +118,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsRuntimeException()
+    public function test_is_RuntimeException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -137,7 +137,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testIsHttpRuntimeErrorException()
+    public function test_is_HttpRuntimeErrorException()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -156,7 +156,7 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      */
-    public function testMapsToUnexpectedErrorStatus()
+    public function test_maps_to_UnexpectedErrorStatus()
     {
         // ----------------------------------------------------------------
         // setup your test
@@ -175,107 +175,23 @@ class NotAFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::newFromNonCallable
+     * @covers ::newFromVar
      * @dataProvider provideNonCallableToTest
      */
-    public function testCanBuildFromNonCallables($nonCallable, $expectedType)
+    public function test_can_build_from_PHP_variable($nonCallable, $expectedType)
     {
         // ----------------------------------------------------------------
         // setup your test
 
         $expectedAlias = "FakeException";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
+        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": factory '{$expectedAlias}' must be a PHP callable; {$expectedType} given";
 
         // ----------------------------------------------------------------
         // perform the change
 
         // we have to pass in an empty filter to make sure that we're picked
         // up as the caller
-        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    /**
-     * @covers ::newFromNonCallable
-     * @dataProvider provideNonCallableToTest
-     */
-    public function testExceptionMessageContainsCaller($nonCallable, $expectedType)
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedAlias = "FakeException";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    /**
-     * @covers ::newFromNonCallable
-     * @dataProvider provideNonCallableToTest
-     */
-    public function testExceptionMessageContainsExceptionAlias($nonCallable, $expectedType)
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedAlias = "FakeException";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualMessage = $unit->getMessage();
-        $actualData = $unit->getMessageData();
-
-        $this->assertEquals($expectedMessage, $actualMessage);
-    }
-
-    /**
-     * @covers ::newFromNonCallable
-     * @dataProvider provideNonCallableToTest
-     */
-    public function testExceptionMessageContainsTypeOfBadFactory($nonCallable, $expectedType)
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedAlias = "FakeException";
-        $expectedMessage = __CLASS__ . '->' . __FUNCTION__ . '()@' . (__LINE__ + 7) . ": '\$factory' for '{$expectedAlias}' must be callable; {$expectedType} given";
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        // we have to pass in an empty filter to make sure that we're picked
-        // up as the caller
-        $unit = NotAFactory::newFromNonCallable($expectedAlias, $nonCallable);
+        $unit = NotAFactory::newFromVar($nonCallable, $expectedAlias);
 
         // ----------------------------------------------------------------
         // test the results

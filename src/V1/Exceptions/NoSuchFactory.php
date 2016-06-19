@@ -59,30 +59,6 @@ class NoSuchFactory
     // adds 'getHttpStatus()' that returns a HTTP 500 status value object
     use UnexpectedErrorStatusProvider;
 
-    /**
-     * create a new exception
-     *
-     * @param  mixed $factoryName
-     *         the name of the factory that we do not know about
-     * @param  array $callerFilter
-     *         are there any namespaces we want to filter out of the call stack?
-     * @return NoSuchFactory
-     *         an fully-built exception for you to throw
-     */
-    public static function newFromFactoryName($factoryName, array $callerFilter = [])
-    {
-        // who called us?
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $caller = FilterCodeCaller::from($backtrace, $callerFilter);
-
-        // all done
-        return new static(
-            "%callerName\$s: no factory called '%factoryName\$s'",
-            [
-                'factoryName' => $factoryName,
-                'callerName' => $caller->getCaller(),
-                'caller' => $caller,
-            ]
-        );
-    }
+    // our format string
+    static protected $defaultFormat = "no factory called '%fieldOrVar\$s'";
 }
